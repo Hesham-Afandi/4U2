@@ -1,0 +1,401 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Cairo", "Inter", system-ui, -apple-system, sans-serif;
+}
+
+body {
+  font-family: "Cairo", "Inter", sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.en-content {
+  font-family: 'Inter', sans-serif;
+  direction: ltr;
+  text-align: left;
+}
+
+.gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-secondary {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.gradient-success {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.gradient-warm {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.gradient-violet {
+  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+}
+
+.gradient-teal {
+  background: linear-gradient(135deg, #2dd4bf 0%, #0891b2 100%);
+}
+
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.formula {
+  font-family: 'Times New Roman', serif;
+  font-style: italic;
+  direction: ltr;
+  display: inline-block;
+}
+
+table.comparison {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+table.comparison th, table.comparison td {
+  border: 1px solid #e5e7eb;
+  padding: 0.75rem;
+}
+
+table.comparison th {
+  background: #f3f4f6;
+  font-weight: bold;
+}
+
+.en-content table.comparison th, .en-content table.comparison td {
+  text-align: left;
+}
+
+.dark table.comparison th {
+  background: #374151;
+  color: #fff;
+  border-color: #4b5563;
+}
+
+.dark table.comparison td {
+  background: #1f2937;
+  color: #d1d5db;
+  border-color: #374151;
+}
+
+mark {
+  background-color: #fbbf24;
+  color: #000;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+.dark mark {
+  background-color: #d97706;
+  color: #fff;
+}
+
+/* Loader progress */
+.loader-progress {
+  width: 240px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  margin-top: 2rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.loader-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  width: 0%;
+  animation: progressFill 2.5s ease-in-out forwards;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.8);
+}
+
+@keyframes progressFill {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
+
+/* Lesson progress metrics */
+.lesson-progress-bar {
+  height: 6px;
+  background: rgba(99, 102, 241, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.lesson-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+/* Certificate rendering */
+.certificate {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 8px double #d97706;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+}
+
+.dark .certificate {
+  background: linear-gradient(135deg, #451a03 0%, #78350f 100%);
+  border-color: #fbbf24;
+}
+
+/* Toast styling */
+.toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1f2937;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  z-index: 9999;
+  animation: toastSlide 0.4s ease;
+}
+
+@keyframes toastSlide {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.kbd {
+  background: #e5e7eb;
+  border: 1px solid #d1d5db;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #374151;
+}
+
+.dark .kbd {
+  background: #374151;
+  border-color: #4b5563;
+  color: #e5e7eb;
+}
+
+.completed-badge {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+/* ========================================== */
+/* Elegant Dark Theme - Override Styles      */
+/* ========================================== */
+
+/* Body background */
+.dark body {
+  background-color: #0A0B0D !important;
+  color: #cbd5e1 !important; /* slate-300 */
+}
+
+/* Custom background palette mapping for dark mode elements */
+.dark .bg-gray-50, 
+.dark .bg-gray-950,
+.dark .bg-slate-950,
+.dark .bg-slate-900,
+.dark #page-loader {
+  background-color: #0A0B0D !important;
+}
+
+/* Main Container and Modular Elements */
+.dark #breadcrumbs,
+.dark .bg-white,
+.dark .bg-gray-900,
+.dark .bg-slate-900/60,
+.dark .bg-gray-900/40,
+.dark .bg-gray-900/60,
+.dark [id^="print-certificate-area"] {
+  background-color: #15181E !important;
+}
+
+/* Sidebar & Navigation Blocks */
+.dark .bg-slate-50,
+.dark .bg-slate-800/40,
+.dark .bg-gray-100,
+.dark .bg-slate-100 {
+  background-color: #111419 !important;
+}
+
+/* Footer Specific Bar */
+.dark footer,
+.dark .bg-slate-900,
+.dark .bg-[#0D0F13] {
+  background-color: #0D0F13 !important;
+  border-top: 1px solid #1e293b !important;
+}
+
+/* Inputs styling matching the premium layout */
+.dark input[type="text"],
+.dark select,
+.dark textarea {
+  background-color: #1E232B !important;
+  border-color: #334155 !important; /* slate-700 */
+  color: #f1f5f9 !important;
+}
+
+.dark input[type="text"]::placeholder {
+  color: #64748b !important;
+}
+
+/* Universal dark borders */
+.dark .border,
+.dark .border-gray-200,
+.dark .border-gray-800,
+.dark .border-slate-800,
+.dark .border-slate-700,
+.dark .border-slate-100,
+.dark .border-transparent {
+  border-color: #1e293b !important;
+}
+
+/* Hover effects for premium cards */
+.dark .card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.dark .card-hover:hover {
+  border-color: #6366f1 !important; /* Indigo accent border */
+  box-shadow: 0 12px 30px rgba(99, 102, 241, 0.15) !important;
+  transform: translateY(-4px) !important;
+}
+
+/* Table Specific Adjustments in Dark Mode */
+.dark table {
+  background-color: #15181E !important;
+  border-color: #1e293b !important;
+}
+
+.dark thead {
+  background-color: rgba(30, 41, 59, 0.5) !important;
+}
+
+.dark tr:hover {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+.dark th, .dark td {
+  border-color: #1e293b !important;
+}
+
+/* Text coloring overrides for readability and elegance */
+.dark .text-gray-800,
+.dark .text-slate-800,
+.dark .text-gray-700,
+.dark .text-slate-700 {
+  color: #f1f5f9 !important; /* slate-100 */
+}
+
+.dark .text-gray-600,
+.dark .text-slate-600,
+.dark .text-gray-500,
+.dark .text-slate-500,
+.dark .text-gray-400,
+.dark .text-slate-400 {
+  color: #94a3b8 !important; /* slate-400 */
+}
+
+/* Premium Dark Linear Gradients for headers/sections */
+.dark .gradient-primary {
+  background: linear-gradient(135deg, #15181E 0%, #1e232b 100%) !important;
+  border-bottom: 1px solid #1e293b !important;
+}
+
+.dark .gradient-secondary {
+  background: linear-gradient(135deg, #1c151e 0%, #15181E 100%) !important;
+}
+
+.dark .gradient-success {
+  background: linear-gradient(135deg, #111c17 0%, #15181E 100%) !important;
+}
+
+.dark .gradient-warm {
+  background: linear-gradient(135deg, #221c10 0%, #15181E 100%) !important;
+}
+
+.dark .gradient-violet {
+  background: linear-gradient(135deg, #181528 0%, #15181E 100%) !important;
+}
+
+.dark .gradient-teal {
+  background: linear-gradient(135deg, #101c1e 0%, #15181E 100%) !important;
+}
+
+/* Lesson detail table comparison */
+.dark table.comparison th {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+.dark table.comparison td {
+  background: #15181E !important;
+  color: #cbd5e1 !important;
+  border-color: #1e293b !important;
+}
+
+/* Math formula block in Dark Mode */
+.dark .formula-block,
+.dark .bg-gradient-to-br.from-indigo-50.to-purple-50 {
+  background: linear-gradient(135deg, #181528 0%, #13111C 100%) !important;
+  border-color: #312e81 !important;
+}
+
+/* Bullets block list */
+.dark .bg-blue-50\/60 {
+  background-color: rgba(30, 41, 59, 0.2) !important;
+  border-color: #6366f1 !important;
+}
+
+/* Progress bar styling inside lesson metrics */
+.dark .lesson-progress-bar {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark .lesson-progress-fill {
+  background: linear-gradient(90deg, #34d399, #059669) !important;
+}
+
+/* Certificate Generator Customization in Dark Mode */
+.dark .certificate {
+  background: linear-gradient(135deg, #1c140c 0%, #15181E 100%) !important;
+  border-color: #fbbf24 !important;
+}
