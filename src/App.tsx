@@ -8,6 +8,10 @@ Download
 import { DB } from './data';
 import { Term, Stream, Program, Grade, Subject, Unit, Lesson, AppState } from './types';
 
+// ✅ استيراد الصور مباشرة - هذه الطريقة تعمل دائماً مع Vite
+import loaderImage from '/loader.png';
+import logoImage from '/logo.png';
+
 const DAYS_OF_WEEK = [
   { key: 'Saturday', name: 'السبت' },
   { key: 'Sunday', name: 'الأحد' },
@@ -54,8 +58,6 @@ export default function App() {
   const [progress, setProgress] = useState<Record<string, { read: boolean; examDone: boolean; totalTime: number }>>({});
   const [studyPlan, setStudyPlan] = useState<any[]>([]);
   const [showPlannerModal, setShowPlannerModal] = useState(false);
-  const [logoError, setLogoError] = useState(false);
-  const [loaderError, setLoaderError] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [installPrompt, setInstallPrompt] = useState<any>(null);
   const [showInstallInstructionsModal, setShowInstallInstructionsModal] = useState(false);
@@ -555,7 +557,7 @@ export default function App() {
       const updated = prev.map(item => {
         if (item.id === id) {
           const newStatus = !item.completed;
-          showToastMsg(newStatus ? '🎯 تم إنجاز الحصة المجدولة بنجاح! أحسنت' : '↩️ تم التراجع عن إنجاز الحصة');
+          showToastMsg(newStatus ? ' تم إنجاز الحصة المجدولة بنجاح! أحسنت' : '↩️ تم التراجع عن إنجاز الحصة');
           return { ...item, completed: newStatus };
         }
         return item;
@@ -792,17 +794,12 @@ export default function App() {
             {/* Ambient blurring background */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.15),transparent_60%)] pointer-events-none" />
             <div className="relative z-10 flex flex-col items-center">
-              {/* Custom Loader Image or Spinner Fallback */}
-              {!loaderError ? (
-                <img
-                  src="/loader.png"
-                  onError={() => setLoaderError(true)}
-                  className="w-36 h-36 object-contain mb-6 drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]"
-                  alt="Loading..."
-                />
-              ) : (
-                <div className="w-20 h-20 border-4 border-white/20 border-t-amber-400 border-r-teal-400 rounded-full animate-spin mb-8 shadow-[0_0_30px_rgba(251,191,36,0.3)]" />
-              )}
+              {/* ✅ Loader Image - PNG فقط بدون fallback */}
+              <img
+                src={loaderImage}
+                className="w-36 h-36 object-contain mb-6 drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]"
+                alt="Loading..."
+              />
               {/* Text */}
               <h2 className="text-3xl font-extrabold tracking-wide mb-2 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-white to-teal-400">
                 منصة 4U التعليمية
@@ -822,18 +819,12 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-4">
           {/* Logo Brand */}
           <div className="flex items-center gap-3 cursor-pointer select-none" onClick={goHome}>
-            {!logoError ? (
-              <img
-                src="/logo.png"
-                onError={() => setLogoError(true)}
-                className="h-12 w-auto object-contain rounded-xl border border-white/10 p-0.5 bg-slate-900/40"
-                alt="4U Logo"
-              />
-            ) : (
-              <div className="bg-white/10 p-2.5 rounded-2xl backdrop-blur-md border border-white/20 shadow-md">
-                <span className="text-2xl font-black tracking-tighter text-amber-300">4U</span>
-              </div>
-            )}
+            {/* ✅ Logo Image - PNG فقط بدون fallback */}
+            <img
+              src={logoImage}
+              className="h-12 w-auto object-contain rounded-xl border border-white/10 p-0.5 bg-slate-900/40"
+              alt="4U Logo"
+            />
             <div>
               <h1 className="font-extrabold text-xl tracking-tight leading-none mb-1">المنصة التعليمية المتكاملة 4U</h1>
               <p className="text-[11px] opacity-75 tracking-wider">منهج متكامل • تفاعلي • احترافي</p>
@@ -1100,7 +1091,7 @@ export default function App() {
                       <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 pt-3 text-xs text-indigo-600 dark:text-indigo-400 font-bold">
                         <div className="flex items-center gap-1.5">
                           {isRead && <span className="bg-green-500 text-white text-[9px] px-1.5 py-0.5 rounded-full">✓ مقروء</span>}
-                          {isDone && <span className="bg-amber-500 text-white text-[9px] px-1.5 py-0.5 rounded-full">🏆 اختبار</span>}
+                          {isDone && <span className="bg-amber-500 text-white text-[9px] px-1.5 py-0.5 rounded-full"> اختبار</span>}
                         </div>
                         <span className="flex items-center gap-1">انتقل الآن ←</span>
                       </div>
@@ -1126,7 +1117,7 @@ export default function App() {
                     <p className="text-lg opacity-90 mb-5 font-medium">رحلة تعلم ذكية ومبسطة للصفوف (9 - 12)</p>
                     <div className="flex flex-wrap gap-3 justify-center md:justify-start">
                       <span className="bg-white/15 backdrop-blur-md px-4 py-2 rounded-2xl text-xs font-semibold border border-white/10 shadow-sm">📚 المنهج كاملاً دون حذف</span>
-                      <span className="bg-white/15 backdrop-blur-md px-4 py-2 rounded-2xl text-xs font-semibold border border-white/10 shadow-sm">🌟 خطة دراسية متكاملة</span>
+                      <span className="bg-white/15 backdrop-blur-md px-4 py-2 rounded-2xl text-xs font-semibold border border-white/10 shadow-sm"> خطة دراسية متكاملة</span>
                       <span className="bg-white/15 backdrop-blur-md px-4 py-2 rounded-2xl text-xs font-semibold border border-white/10 shadow-sm">⏱️ تتبع ذكي لوقت الدراسة</span>
                     </div>
                   </div>
@@ -1153,11 +1144,11 @@ export default function App() {
                   ))}
                 </div>
 
-                {/* 📅 SECTION: WEEKLY STUDY PLANNER */}
+                {/*  SECTION: WEEKLY STUDY PLANNER */}
                 <div className="mt-12 bg-white dark:bg-gray-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 md:p-8 shadow-md">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-100 dark:border-slate-800 pb-5 text-right">
                     <div className="flex items-center gap-3">
-                      <div className="text-4xl">🗓️</div>
+                      <div className="text-4xl">️</div>
                       <div>
                         <h3 className="text-2xl font-black text-gray-800 dark:text-white">جدول المذاكرة الأسبوعي التفاعلي</h3>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">خطط لمذاكرة دروسك بانتظام وتصفحها مباشرة من جدولك الخاص</p>
@@ -1194,7 +1185,7 @@ export default function App() {
                         if (percentage === 0) feedback = 'ابدأ بمذاكرة أولى حصصك اليوم لصنع انطلاقة قوية! 🚀';
                         else if (percentage < 50) feedback = 'خطوة رائعة! استمر في تحقيق تقدمك ولا تتوقف. 💪';
                         else if (percentage < 100) feedback = 'رائع جداً! شارف أسبوعك الدراسي على الاكتمال بنجاح. 🔥';
-                        else feedback = 'إنجاز أسطوري! أكملت كامل خطتك للأسبوع الحالي بنجاح! 🏆🎉';
+                        else feedback = 'إنجاز أسطوري! أكملت كامل خطتك للأسبوع الحالي بنجاح! 🏆';
                         return (
                           <div className="bg-gradient-to-r from-indigo-500/10 to-violet-500/10 border border-indigo-100 dark:border-indigo-950 rounded-2xl p-4 mb-6 text-right">
                             <div className="flex items-center justify-between mb-2">
@@ -1249,7 +1240,7 @@ export default function App() {
                                           className="absolute top-1 left-1 text-gray-400 hover:text-red-500 text-xs p-1"
                                           title="إزالة"
                                         >
-                                          ✕
+                                          
                                         </button>
                                         <div className="pr-1 pl-3.5">
                                           <div className="flex items-center gap-1 mb-1 flex-wrap">
@@ -1326,7 +1317,7 @@ export default function App() {
                                               >
                                                 <span>{isRead ? '✓ منجز' : '○ غير منجز'}</span>
                                               </button>
-                                              <span className="text-gray-400 dark:text-gray-500 font-mono text-[9px]">⏱️ {item.time}</span>
+                                              <span className="text-gray-400 dark:text-gray-500 font-mono text-[9px]">️ {item.time}</span>
                                             </div>
                                           );
                                         })()}
@@ -1454,7 +1445,7 @@ export default function App() {
                         <div className="text-5xl mb-3">{s.icon}</div>
                         <h4 className="font-extrabold text-lg text-gray-800 dark:text-white mb-2">{s.name}</h4>
                         <span className={`text-[10px] font-bold py-1 px-3 rounded-full ${isAvailable ? 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400'}`}>
-                          {isAvailable ? '✅ متاح حالياً' : '🚧 قريباً'}
+                          {isAvailable ? '✅ متاح حالياً' : ' قريباً'}
                         </span>
                       </button>
                     );
@@ -1704,7 +1695,7 @@ export default function App() {
                             <h2 className="font-extrabold text-lg text-amber-950 dark:text-amber-300 mr-2 inline-block leading-tight">{appState.lesson.title}</h2>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="text-[10px] bg-amber-200/50 dark:bg-slate-800 text-amber-900 dark:text-gray-300 px-2.5 py-1 rounded-full font-bold">👁️ وضع التركيز مفعل</span>
+                            <span className="text-[10px] bg-amber-200/50 dark:bg-slate-800 text-amber-900 dark:text-gray-300 px-2.5 py-1 rounded-full font-bold">️ وضع التركيز مفعل</span>
                           </div>
                         </div>
 
@@ -1881,7 +1872,7 @@ export default function App() {
                               />
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs pt-1">
                                 <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
-                                  <span>💾</span>
+                                  <span></span>
                                   <span>تم الحفظ تلقائياً في حسابك</span>
                                 </div>
                                 <button
@@ -1962,7 +1953,7 @@ export default function App() {
                                     className="hover:text-sky-500 transition text-[11px] font-bold"
                                     title="تليجرام"
                                   >
-                                    🔵 تليجرام
+                                     تليجرام
                                   </a>
                                   <a
                                     href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(appState.lesson.lessonUrl || '')}`}
@@ -1999,7 +1990,7 @@ export default function App() {
                                     className="hover:text-emerald-500 transition text-[11px] font-bold"
                                     title="واتساب"
                                   >
-                                    🟢 واتساب
+                                     واتساب
                                   </a>
                                   <a
                                     href={`https://t.me/share/url?url=${encodeURIComponent(appState.lesson.examUrl || '')}&text=${encodeURIComponent(`📝 اختبار درس: ${appState.lesson.title}`)}`}
@@ -2099,7 +2090,7 @@ export default function App() {
                                 onClick={() => setPomodoroIsActive(!pomodoroIsActive)}
                                 className={`px-4 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1 shadow-sm ${pomodoroIsActive ? 'bg-amber-500 hover:bg-amber-600 text-white' : 'bg-indigo-600 hover:bg-indigo-700 text-white'}`}
                               >
-                                <span>{pomodoroIsActive ? '⏸️ إيقاف' : '▶️ ابدأ'}</span>
+                                <span>{pomodoroIsActive ? '️ إيقاف' : '▶️ ابدأ'}</span>
                               </button>
                               <button
                                 onClick={() => {
@@ -2156,7 +2147,7 @@ export default function App() {
                             className="w-full bg-slate-50 dark:bg-amber-950/15 border border-slate-200/60 dark:border-amber-500/30 rounded-2xl p-3 text-xs focus:outline-none focus:border-indigo-500 dark:focus:border-amber-400 text-right text-gray-800 dark:text-amber-100 placeholder-gray-400 dark:placeholder-amber-600/70 min-h-[100px] transition font-sans shadow-inner"
                           />
                           <div className="text-[10px] text-indigo-600 dark:text-amber-400 font-bold flex items-center justify-between">
-                            <span>💾 يتم الحفظ تلقائياً</span>
+                            <span> يتم الحفظ تلقائياً</span>
                             <span className="opacity-80">متاحة في المراجعة الذاتية 👆</span>
                           </div>
                         </div>
@@ -2382,7 +2373,7 @@ export default function App() {
                 <span className="text-[10px] font-bold opacity-80 uppercase block">اختبارات منجزة</span>
               </div>
               <div className="gradient-success text-slate-900 p-4 rounded-2xl text-center shadow-md">
-                <div className="text-3xl mb-1">⏱️</div>
+                <div className="text-3xl mb-1">️</div>
                 <div className="text-2xl font-black">
                   {Math.floor(stats.totalTime / 3600)}س {Math.floor((stats.totalTime % 3600) / 60)}د
                 </div>
@@ -2629,7 +2620,7 @@ export default function App() {
                 // If they typed a custom title
                 const customInput = (document.getElementById('custom-lesson-title-input') as HTMLInputElement)?.value || '';
                 if (!customInput.trim()) {
-                  showToastMsg('⚠️ يرجى اختيار درس أو كتابة عنوان مخصص');
+                  showToastMsg('️ يرجى اختيار درس أو كتابة عنوان مخصص');
                   return;
                 }
                 lessonTitle = customInput;
@@ -3024,7 +3015,7 @@ export default function App() {
           >
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4 flex-row-reverse">
               <h3 className="text-xl font-black text-slate-800 dark:text-white flex items-center gap-2">
-                <span>📲</span> دليل تثبيت التطبيق على جهازك
+                <span></span> دليل تثبيت التطبيق على جهازك
               </h3>
               <button onClick={() => setShowInstallInstructionsModal(false)} className="text-2xl text-gray-400 hover:text-gray-600 dark:hover:text-white cursor-pointer select-none">×</button>
             </div>
