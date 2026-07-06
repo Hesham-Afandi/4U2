@@ -781,38 +781,126 @@ export default function App() {
 
   return (
     <div className="bg-gray-50 min-h-screen dark:bg-gray-950 dark:text-gray-100 flex flex-col font-sans transition-colors duration-300 antialiased" dir="rtl">
-      {/* 1. STARTUP LOADER */}
-      <AnimatePresence>
-        {showLoader && (
-          <motion.div
-            id="page-loader"
-            className="fixed inset-0 z-50 flex flex-col justify-center items-center overflow-hidden bg-slate-900 text-white cursor-pointer"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.8 } }}
-            onClick={() => setShowLoader(false)}
-          >
-            {/* Ambient blurring background */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.15),transparent_60%)] pointer-events-none" />
-            <div className="relative z-10 flex flex-col items-center">
-              {/* ✅ Loader Image - PNG فقط بدون fallback */}
-              <img
-                src={loaderImage}
-                className="w-36 h-36 object-contain mb-6 drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]"
-                alt="Loading..."
-              />
-              {/* Text */}
-              <h2 className="text-3xl font-extrabold tracking-wide mb-2 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-white to-teal-400">
-                منصة 4U التعليمية
-              </h2>
-              <p className="text-sm text-slate-300/80 mb-6 font-medium">جاري تهيئة المناهج والتكامل التفاعلي...</p>
-              {/* Progress bar simulation */}
-              <div className="loader-progress">
-                <div className="loader-progress-bar" />
-              </div>
-            </div>
-          </motion.div>
+     {/* 1. STARTUP LOADER - Full Screen with Fade Effect */}
+<AnimatePresence>
+  {showLoader && (
+    <motion.div
+      id="page-loader"
+      className="fixed inset-0 z-50 flex flex-col justify-center items-center overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900"
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0, transition: { duration: 1.2, ease: "easeInOut" } }}
+      onClick={() => setShowLoader(false)}
+    >
+      {/* Animated Background Gradient */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.2),transparent_70%)] animate-pulse" />
+      
+      {/* Floating Particles Effect */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-indigo-400 rounded-full animate-ping opacity-30" />
+        <div className="absolute top-3/4 right-1/3 w-3 h-3 bg-amber-400 rounded-full animate-ping opacity-20" style={{ animationDelay: '0.5s' }} />
+        <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-teal-400 rounded-full animate-ping opacity-25" style={{ animationDelay: '1s' }} />
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center">
+        {/* Loader Image (if exists) */}
+        {!loaderError ? (
+          <motion.img
+            src={loaderSrc}
+            onError={() => {
+              if (loaderSrc === '/loader.png') {
+                setLoaderSrc('/loader.gif');
+              } else {
+                setLoaderError(true);
+              }
+            }}
+            className="w-32 h-32 object-contain mb-8 drop-shadow-[0_0_30px_rgba(251,191,36,0.4)]"
+            alt="Loading..."
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          />
+        ) : (
+          <motion.div 
+            className="w-24 h-24 border-4 border-white/20 border-t-amber-400 border-r-teal-400 rounded-full animate-spin mb-8 shadow-[0_0_40px_rgba(251,191,36,0.3)]"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5 }}
+          />
         )}
-      </AnimatePresence>
+
+        {/* Main Text with Fade Effect */}
+        <motion.h2 
+          className="text-4xl md:text-5xl font-black tracking-wide mb-3 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-white to-teal-400"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          جاري تحميل المنصة
+        </motion.h2>
+
+        {/* Subtitle */}
+        <motion.p 
+          className="text-sm md:text-base text-slate-300/80 mb-8 font-medium"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        >
+          منصة 4U التعليمية المتكاملة
+        </motion.p>
+
+        {/* Progress Bar with Fade */}
+        <motion.div 
+          className="w-64 md:w-80 h-1.5 bg-white/10 rounded-full overflow-hidden"
+          initial={{ opacity: 0, width: 0 }}
+          animate={{ opacity: 1, width: '100%' }}
+          transition={{ duration: 0.5, delay: 0.9 }}
+        >
+          <motion.div 
+            className="h-full bg-gradient-to-r from-amber-400 via-teal-400 to-indigo-400 rounded-full"
+            initial={{ width: '0%' }}
+            animate={{ width: '100%' }}
+            transition={{ duration: 2, delay: 1, ease: "easeInOut" }}
+          />
+        </motion.div>
+
+        {/* Loading Dots Animation */}
+        <motion.div 
+          className="flex gap-2 mt-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2 }}
+        >
+          <motion.div 
+            className="w-2 h-2 bg-amber-400 rounded-full"
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
+          />
+          <motion.div 
+            className="w-2 h-2 bg-teal-400 rounded-full"
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
+          />
+          <motion.div 
+            className="w-2 h-2 bg-indigo-400 rounded-full"
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
+          />
+        </motion.div>
+      </div>
+
+      {/* Bottom Branding */}
+      <motion.div 
+        className="absolute bottom-8 text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+      >
+        <p className="text-xs text-slate-500 font-medium">© 2026 منصة 4U التعليمية</p>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
 
       {/* 2. MAIN HEADER & TOP NAVIGATION BAR */}
       <header className="gradient-primary text-white py-4 px-4 md:px-8 shadow-lg sticky top-0 z-40 relative">
