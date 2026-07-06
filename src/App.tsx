@@ -24,7 +24,6 @@ const DAYS_OF_WEEK = [
 ];
 
 export default function App() {
-  // App Navigation State
   const [appState, setAppState] = useState<AppState>({
     term: null,
     stream: null,
@@ -35,16 +34,11 @@ export default function App() {
     lesson: null,
   });
 
-  // Navigation History for Back Button
   const [history, setHistory] = useState<AppState[]>([]);
-
-  // UI State
   const [searchQuery, setSearchQuery] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [showLoader, setShowLoader] = useState(true);
   const [studentName, setStudentName] = useState('');
-
-  // Modals
   const [showFavoritesModal, setShowFavoritesModal] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [showCertificateModal, setShowCertificateModal] = useState(false);
@@ -53,8 +47,6 @@ export default function App() {
   const [plannerTime, setPlannerTime] = useState('16:00');
   const [plannerLessonKey, setPlannerLessonKey] = useState('');
   const [plannerNotes, setPlannerNotes] = useState('');
-
-  // Persistence States
   const [favorites, setFavorites] = useState<{ key: string; title: string; icon: string; unitName: string }[]>([]);
   const [progress, setProgress] = useState<Record<string, { read: boolean; examDone: boolean; totalTime: number }>>({});
   const [studyPlan, setStudyPlan] = useState<any[]>([]);
@@ -62,31 +54,21 @@ export default function App() {
   const [toast, setToast] = useState<string | null>(null);
   const [installPrompt, setInstallPrompt] = useState<any>(null);
   const [showInstallInstructionsModal, setShowInstallInstructionsModal] = useState(false);
-
-  // Focus Mode & Personal Student Notes
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [studentNotes, setStudentNotes] = useState<Record<string, string>>({});
   const [showSummaryNotesModal, setShowSummaryNotesModal] = useState(false);
-
-  // Daily Reminder States
   const [dailyReminderTime, setDailyReminderTime] = useState('17:00');
   const [dailyReminderActive, setDailyReminderActive] = useState(false);
   const [dailyReminderMsg, setDailyReminderMsg] = useState('حان وقت المذاكرة اليومي! فلنجتهد معاً لنصنع التفوق 📚✨');
   const [showReminderSettingModal, setShowReminderSettingModal] = useState(false);
   const [showAlarmTriggeredModal, setShowAlarmTriggeredModal] = useState(false);
-
-  // Pomodoro Timer States (Inside Active Lesson)
-  const [pomodoroSeconds, setPomodoroSeconds] = useState(1500); // 25 mins = 1500 secs
+  const [pomodoroSeconds, setPomodoroSeconds] = useState(1500);
   const [pomodoroIsActive, setPomodoroIsActive] = useState(false);
   const [pomodoroMode, setPomodoroMode] = useState<'study' | 'break'>('study');
   const [pomodoroTotalMinutesUsed, setPomodoroTotalMinutesUsed] = useState(0);
-
-  // Time tracker ref
   const lessonStartTimeRef = useRef<number | null>(null);
 
-  // 1. Initial Setup: Load theme, favorites, progress, and handle PWA install prompt
   useEffect(() => {
-    // Theme
     const savedTheme = localStorage.getItem('theme');
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const isDark = savedTheme ? savedTheme === 'dark' : true;
@@ -97,7 +79,6 @@ export default function App() {
       document.documentElement.classList.remove('dark');
     }
 
-    // Favorites
     try {
       const favs = JSON.parse(localStorage.getItem('4u_favorites') || '[]');
       setFavorites(favs);
@@ -105,7 +86,6 @@ export default function App() {
       setFavorites([]);
     }
 
-    // Progress
     try {
       const prog = JSON.parse(localStorage.getItem('4u_progress') || '{}');
       setProgress(prog);
@@ -113,7 +93,6 @@ export default function App() {
       setProgress({});
     }
 
-    // Study Plan
     try {
       const plan = JSON.parse(localStorage.getItem('4u_study_plan') || '[]');
       setStudyPlan(plan);
@@ -121,12 +100,10 @@ export default function App() {
       setStudyPlan([]);
     }
 
-    // Loader fadeout
     const timer = setTimeout(() => {
       setShowLoader(false);
     }, 2500);
 
-    // PWA Install Prompt
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setInstallPrompt(e);
@@ -139,7 +116,6 @@ export default function App() {
     };
   }, []);
 
-  // Sync theme changes
   const toggleTheme = () => {
     const newDark = !isDarkMode;
     setIsDarkMode(newDark);
@@ -151,7 +127,6 @@ export default function App() {
     }
   };
 
-  // 2. Track Study Time for Active Lesson
   useEffect(() => {
     if (appState.lesson && appState.unit) {
       lessonStartTimeRef.current = Date.now();
@@ -185,7 +160,6 @@ export default function App() {
     });
   };
 
-  // Daily Reminder & Notes Load effect
   useEffect(() => {
     try {
       const savedRem = localStorage.getItem('4u_daily_reminder');
@@ -208,7 +182,6 @@ export default function App() {
     }
   }, []);
 
-  // Daily Reminder Interval Checker
   useEffect(() => {
     if (!dailyReminderActive) return;
     let alarmCheckedHourMin = '';
@@ -218,7 +191,6 @@ export default function App() {
       if (currentHourMin === dailyReminderTime && alarmCheckedHourMin !== currentHourMin) {
         alarmCheckedHourMin = currentHourMin;
         setShowAlarmTriggeredModal(true);
-        // Play notification sound
         try {
           const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
           const osc = audioCtx.createOscillator();
@@ -226,9 +198,9 @@ export default function App() {
           osc.connect(gain);
           gain.connect(audioCtx.destination);
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
-          osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.15); // A5
-          osc.frequency.setValueAtTime(1174.66, audioCtx.currentTime + 0.3); // D6
+          osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+          osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.15);
+          osc.frequency.setValueAtTime(1174.66, audioCtx.currentTime + 0.3);
           gain.gain.setValueAtTime(0, audioCtx.currentTime);
           gain.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.05);
           gain.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.4);
@@ -240,12 +212,11 @@ export default function App() {
         }
       }
     };
-    const interval = setInterval(checkAlarm, 30000); // Check every 30 seconds
-    checkAlarm(); // Instant initial check
+    const interval = setInterval(checkAlarm, 30000);
+    checkAlarm();
     return () => clearInterval(interval);
   }, [dailyReminderActive, dailyReminderTime]);
 
-  // Pomodoro timer effect
   useEffect(() => {
     let timerId: any = null;
     if (pomodoroIsActive && pomodoroSeconds > 0) {
@@ -253,9 +224,7 @@ export default function App() {
         setPomodoroSeconds(prev => {
           if (prev <= 1) {
             setPomodoroIsActive(false);
-            // Handle completion
-            showToastMsg(pomodoroMode === 'study' ? '🏆 برافو! أنهيت 25 دقيقة من المذاكرة المركزة' : '☕ انتهت الاستراحة، فلنعد للمذاكرة بنشاط!');
-            // Play alert sound
+            showToastMsg(pomodoroMode === 'study' ? ' برافو! أنهيت 25 دقيقة من المذاكرة المركزة' : '☕ انتهت الاستراحة، فلنعد للمذاكرة بنشاط!');
             try {
               const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
               const osc = audioCtx.createOscillator();
@@ -263,9 +232,9 @@ export default function App() {
               osc.connect(gain);
               gain.connect(audioCtx.destination);
               osc.type = 'triangle';
-              osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-              osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.2); // E5
-              osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.4); // G5
+              osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+              osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.2);
+              osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.4);
               gain.gain.setValueAtTime(0, audioCtx.currentTime);
               gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.1);
               gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.5);
@@ -276,7 +245,6 @@ export default function App() {
               console.warn(e);
             }
             if (pomodoroMode === 'study') {
-              // Add 25 minutes to statistics!
               if (appState.lesson && appState.unit) {
                 const activeLessonKey = getLessonKey(appState.lesson, appState.unit);
                 if (activeLessonKey) {
@@ -296,7 +264,6 @@ export default function App() {
     };
   }, [pomodoroIsActive, pomodoroSeconds, pomodoroMode, appState.lesson, appState.unit]);
 
-  // Helper to save student note
   const updateStudentNote = (lessonKey: string, noteText: string) => {
     setStudentNotes(prev => {
       const updated = {
@@ -308,7 +275,6 @@ export default function App() {
     });
   };
 
-  // Helper to save reminder settings
   const updateReminderSettings = (time: string, active: boolean, msg: string) => {
     setDailyReminderTime(time);
     setDailyReminderActive(active);
@@ -317,7 +283,6 @@ export default function App() {
     showToastMsg('💾 تم حفظ إعدادات التذكير اليومي');
   };
 
-  // Keys helper
   const getCurriculumKey = (stateVal = appState) => {
     if (!stateVal.subject || !stateVal.grade || !stateVal.term || !stateVal.stream) return null;
     let streamPart = 'general';
@@ -333,7 +298,6 @@ export default function App() {
     return `${currKey}-U${unit.id}-L${lesson.id}`;
   };
 
-  // Toast Helper
   const showToastMsg = (msg: string) => {
     setToast(msg);
     setTimeout(() => {
@@ -341,7 +305,6 @@ export default function App() {
     }, 2500);
   };
 
-  // Install App Action
   const handleInstallApp = async () => {
     if (!installPrompt) {
       setShowInstallInstructionsModal(true);
@@ -362,7 +325,6 @@ export default function App() {
     }
   };
 
-  // Keyboard Shortcuts handler
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -373,14 +335,12 @@ export default function App() {
         else if (showPlannerModal) setShowPlannerModal(false);
         else handleBack();
       }
-      // Ctrl+D / Cmd+D for favorite current lesson
       if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
         if (appState.lesson && appState.unit) {
           e.preventDefault();
           toggleFavorite(appState.lesson, appState.unit);
         }
       }
-      // Ctrl+S / Cmd+S to share current lesson
       if ((e.ctrlKey || e.metaKey) && e.key === 's') {
         if (appState.lesson) {
           e.preventDefault();
@@ -393,12 +353,10 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [appState, showFavoritesModal, showStatsModal, showCertificateModal, showShareModal, showPlannerModal, favorites, history]);
 
-  // Push to history when state changes
   const navigateTo = (updater: Partial<AppState>) => {
     setHistory(prev => [...prev, { ...appState }]);
     setAppState(prev => {
       const next = { ...prev, ...updater };
-      // Clear lower selections if higher selection changes
       if (updater.term !== undefined) {
         next.stream = null; next.program = null; next.grade = null; next.subject = null; next.unit = null; next.lesson = null;
       } else if (updater.stream !== undefined) {
@@ -442,7 +400,6 @@ export default function App() {
     setSearchQuery('');
   };
 
-  // Breadcrumbs jump logic
   const jumpToBreadcrumb = (level: keyof AppState) => {
     setAppState(prev => {
       const next = { ...prev };
@@ -464,7 +421,6 @@ export default function App() {
     setSearchQuery('');
   };
 
-  // Favorite toggle handler
   const toggleFavorite = (lesson: Lesson, unit: Unit) => {
     const key = getLessonKey(lesson, unit);
     if (!key) return;
@@ -488,7 +444,6 @@ export default function App() {
     });
   };
 
-  // Toggle lesson read status
   const toggleLessonRead = (lesson: Lesson, unit: Unit, forceRead?: boolean) => {
     const key = getLessonKey(lesson, unit);
     if (!key) return;
@@ -503,7 +458,6 @@ export default function App() {
         }
       };
       localStorage.setItem('4u_progress', JSON.stringify(updated));
-      // Only show toast notifications on manual toggle
       if (forceRead === undefined) {
         if (newReadStatus) {
           showToastMsg('✅ تم تحديد الدرس كمقروء');
@@ -515,7 +469,6 @@ export default function App() {
     });
   };
 
-  // Study Planner actions
   const addToSchedule = (item: {
     day: string;
     time: string;
@@ -558,7 +511,7 @@ export default function App() {
       const updated = prev.map(item => {
         if (item.id === id) {
           const newStatus = !item.completed;
-          showToastMsg(newStatus ? '🎯 تم إنجاز الحصة المجدولة بنجاح! أحسنت' : '↩️ تم التراجع عن إنجاز الحصة');
+          showToastMsg(newStatus ? ' تم إنجاز الحصة المجدولة بنجاح! أحسنت' : '↩️ تم التراجع عن إنجاز الحصة');
           return { ...item, completed: newStatus };
         }
         return item;
@@ -633,7 +586,6 @@ export default function App() {
     return list;
   };
 
-  // Mark exam done
   const markExamDone = (lesson: Lesson, unit: Unit) => {
     const key = getLessonKey(lesson, unit);
     if (!key) return;
@@ -647,17 +599,15 @@ export default function App() {
         }
       };
       localStorage.setItem('4u_progress', JSON.stringify(updated));
-      showToastMsg('🎉 أحسنت! تم تسجيل إنجاز الاختبار');
+      showToastMsg(' أحسنت! تم تسجيل إنجاز الاختبار');
       return updated;
     });
-    // Check if all exams in current unit are done to trigger certificate preview
     const currKey = getCurriculumKey();
     const curriculum = DB.curriculum[currKey || ''];
     if (curriculum && unit) {
       let allDone = true;
       unit.lessons.forEach(l => {
         const lk = `${currKey}-U${unit.id}-L${l.id}`;
-        // Since setProgress is async, check both current and previous state
         if (l.id !== lesson.id && (!progress[lk] || !progress[lk].examDone)) {
           allDone = false;
         }
@@ -670,7 +620,6 @@ export default function App() {
     }
   };
 
-  // Search Logic (Global scanner with navigation jump context!)
   const searchLessons = (query: string) => {
     const lowercaseQuery = query.toLowerCase().trim();
     if (!lowercaseQuery) return [];
@@ -729,7 +678,6 @@ export default function App() {
 
   const matchingSearchResults = searchLessons(searchQuery);
 
-  // Statistics calculation helpers
   const getStatsMetrics = () => {
     let totalRead = 0;
     let totalExams = 0;
@@ -739,7 +687,6 @@ export default function App() {
       if (item.examDone) totalExams++;
       totalTime += item.totalTime || 0;
     });
-    // Count total lessons available in entire DB
     let totalLessonsCount = 0;
     Object.values(DB.curriculum).forEach(curr => {
       curr.units.forEach(u => {
@@ -792,17 +739,14 @@ export default function App() {
             exit={{ opacity: 0, transition: { duration: 1.2, ease: "easeInOut" } }}
             onClick={() => setShowLoader(false)}
           >
-            {/* Animated Background Gradient */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.2),transparent_70%)] animate-pulse" />
             
-            {/* Floating Particles Effect */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
               <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-indigo-400 rounded-full animate-ping opacity-30" />
               <div className="absolute top-3/4 right-1/3 w-3 h-3 bg-amber-400 rounded-full animate-ping opacity-20" style={{ animationDelay: '0.5s' }} />
               <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-teal-400 rounded-full animate-ping opacity-25" style={{ animationDelay: '1s' }} />
             </div>
 
-            {/* Main Content */}
             <div className="relative z-10 flex flex-col items-center justify-center">
               {/* ✅ Loader SVG - Base64 */}
               <motion.img
@@ -814,7 +758,6 @@ export default function App() {
                 transition={{ duration: 0.6 }}
               />
 
-              {/* Main Text with Fade Effect */}
               <motion.h2
                 className="text-4xl md:text-5xl font-black tracking-wide mb-3 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-white to-teal-400"
                 initial={{ opacity: 0, y: 20 }}
@@ -824,7 +767,6 @@ export default function App() {
                 جاري تحميل المنصة
               </motion.h2>
 
-              {/* Subtitle */}
               <motion.p
                 className="text-sm md:text-base text-slate-300/80 mb-8 font-medium"
                 initial={{ opacity: 0 }}
@@ -834,7 +776,6 @@ export default function App() {
                 منصة 4U التعليمية المتكاملة
               </motion.p>
 
-              {/* Progress Bar with Fade */}
               <motion.div
                 className="w-64 md:w-80 h-1.5 bg-white/10 rounded-full overflow-hidden"
                 initial={{ opacity: 0, width: 0 }}
@@ -849,7 +790,6 @@ export default function App() {
                 />
               </motion.div>
 
-              {/* Loading Dots Animation */}
               <motion.div
                 className="flex gap-2 mt-6"
                 initial={{ opacity: 0 }}
@@ -874,7 +814,6 @@ export default function App() {
               </motion.div>
             </div>
 
-            {/* Bottom Branding */}
             <motion.div
               className="absolute bottom-8 text-center"
               initial={{ opacity: 0 }}
@@ -890,7 +829,6 @@ export default function App() {
       {/* 2. MAIN HEADER & TOP NAVIGATION BAR */}
       <header className="gradient-primary text-white py-4 px-4 md:px-8 shadow-lg sticky top-0 z-40 relative">
         <div className="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-4">
-          {/* Logo Brand */}
           <div className="flex items-center gap-3 cursor-pointer select-none" onClick={goHome}>
             {/* ✅ Logo SVG - Base64 */}
             <img
@@ -904,7 +842,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* Desktop Global Search Input */}
           <div className="hidden md:flex flex-1 max-w-md mx-4 relative">
             <input
               type="text"
@@ -916,9 +853,7 @@ export default function App() {
             <Search className="w-5 h-5 absolute right-3.5 top-2.5 text-white/60 pointer-events-none" />
           </div>
 
-          {/* Top Bar Action Rail */}
           <div className="flex items-center gap-2 md:gap-3 flex-wrap">
-            {/* Back button */}
             {history.length > 0 && (
               <button
                 onClick={handleBack}
@@ -929,7 +864,6 @@ export default function App() {
                 <span className="hidden sm:inline">رجوع</span>
               </button>
             )}
-            {/* Bookmarks */}
             <button
               onClick={() => setShowFavoritesModal(true)}
               className="bg-white/10 hover:bg-white/20 p-2 rounded-xl backdrop-blur-sm border border-white/15 transition flex items-center gap-1.5 text-sm font-semibold relative cursor-pointer"
@@ -943,7 +877,6 @@ export default function App() {
                 </span>
               )}
             </button>
-            {/* Dashboard Statistics */}
             <button
               onClick={() => setShowStatsModal(true)}
               className="bg-white/10 hover:bg-white/20 p-2 rounded-xl backdrop-blur-sm border border-white/15 transition flex items-center gap-1.5 text-sm font-semibold cursor-pointer"
@@ -952,13 +885,12 @@ export default function App() {
               <BarChart2 className="w-4 h-4 text-emerald-300" />
               <span className="hidden sm:inline">إحصائياتي</span>
             </button>
-            {/* Weekly Study Planner Button */}
             <button
               onClick={() => setShowPlannerModal(true)}
               className="bg-white/10 hover:bg-white/20 p-2 rounded-xl backdrop-blur-sm border border-white/15 transition flex items-center gap-1.5 text-sm font-semibold cursor-pointer relative"
               title="جدول المذاكرة الأسبوعي"
             >
-              <span>📅</span>
+              <span></span>
               <span className="hidden sm:inline">جدول المذاكرة</span>
               {studyPlan.length > 0 && (
                 <span className="absolute -top-1.5 -left-1.5 bg-amber-500 text-slate-950 rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-extrabold shadow-md">
@@ -966,7 +898,6 @@ export default function App() {
                 </span>
               )}
             </button>
-            {/* Dafter Khana external link */}
             <a
               href="https://hesham-afandi.github.io/DafterKhana/"
               target="_blank"
@@ -977,7 +908,6 @@ export default function App() {
               <span>📓</span>
               <span className="hidden sm:inline">دفتر خانة</span>
             </a>
-            {/* Daily Reminder Button */}
             <button
               onClick={() => setShowReminderSettingModal(true)}
               className="bg-white/10 hover:bg-white/20 p-2 rounded-xl backdrop-blur-sm border border-white/15 transition flex items-center gap-1.5 text-sm font-semibold cursor-pointer"
@@ -986,7 +916,6 @@ export default function App() {
               <span>{dailyReminderActive ? '⏰' : '🔕'}</span>
               <span className="hidden sm:inline">التذكير اليومي</span>
             </button>
-            {/* Summary Review Notes Button */}
             <button
               onClick={() => setShowSummaryNotesModal(true)}
               className="bg-white/10 hover:bg-white/20 p-2 rounded-xl backdrop-blur-sm border border-white/15 transition flex items-center gap-1.5 text-sm font-semibold cursor-pointer"
@@ -995,7 +924,6 @@ export default function App() {
               <span>📝</span>
               <span className="hidden sm:inline">مراجعة الامتحان</span>
             </button>
-            {/* Theme toggler */}
             <button
               onClick={toggleTheme}
               className="bg-white/10 hover:bg-white/20 p-2 rounded-xl backdrop-blur-sm border border-white/15 transition flex items-center justify-center cursor-pointer"
@@ -1003,7 +931,6 @@ export default function App() {
             >
               {isDarkMode ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-slate-200" />}
             </button>
-            {/* Home button */}
             <button
               onClick={goHome}
               className="bg-amber-400 hover:bg-amber-500 text-slate-900 py-2 px-3.5 rounded-xl transition flex items-center gap-1.5 text-sm font-bold shadow-md cursor-pointer"
@@ -1014,7 +941,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Mobile Search Bar */}
         <div className="md:hidden mt-3 px-2 w-full relative">
           <input
             type="text"
@@ -1027,7 +953,6 @@ export default function App() {
           <Search className="w-4 h-4 absolute right-5 top-3 text-white/75 pointer-events-none" />
         </div>
 
-        {/* Global Progress Line */}
         <div className="absolute bottom-0 left-0 w-full h-[3px] bg-white/20">
           <div
             className="h-full bg-gradient-to-r from-emerald-400 to-teal-400 transition-all duration-500"
@@ -1103,7 +1028,6 @@ export default function App() {
 
       {/* 3. APPLICATION WORKSPACE CONTAINER */}
       <main id="app" className="max-w-7xl mx-auto px-4 md:px-6 pb-16 flex-1 w-full bg-gray-50/50 dark:bg-gray-950/50 backdrop-blur-sm">
-        {/* If search query is active, override standard flow with global responsive search interface! */}
         {searchQuery.trim() !== '' ? (
           <div className="fade-in py-4">
             <div className="flex items-center gap-3 mb-6">
@@ -1117,7 +1041,7 @@ export default function App() {
             </div>
             {matchingSearchResults.length === 0 ? (
               <div className="text-center py-16 bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800 rounded-3xl p-8">
-                <div className="text-6xl mb-4">🔍</div>
+                <div className="text-6xl mb-4"></div>
                 <h3 className="text-xl font-bold text-gray-200 dark:text-gray-300 mb-2">لا توجد نتائج مطابقة</h3>
                 <p className="text-gray-400 dark:text-gray-500 max-w-md mx-auto text-sm leading-relaxed">
                   جرب البحث بكلمات مختلفة مثل "تكامل"، "سرعة"، "فيزياء"، "تفاضل"، "متجهات" أو "Bohr".
@@ -1175,12 +1099,9 @@ export default function App() {
             )}
           </div>
         ) : (
-          /* STANDARD APPLICATION STATE ROUTER */
           <div className="py-2">
-            {/* VIEW 1: HOME (SELECT TERM) */}
             {!appState.term && (
               <div className="fade-in">
-                {/* Hero Card Banner */}
                 <div className="gradient-primary rounded-3xl p-8 md:p-12 text-white mb-8 shadow-xl relative overflow-hidden">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent_50%)] pointer-events-none" />
                   <div className="text-center md:text-right relative z-10">
@@ -1190,8 +1111,8 @@ export default function App() {
                     <p className="text-lg opacity-95 mb-5 font-medium text-gray-100 drop-shadow">رحلة تعلم ذكية ومبسطة للصفوف (9 - 12)</p>
                     <div className="flex flex-wrap gap-3 justify-center md:justify-start">
                       <span className="bg-white/15 backdrop-blur-md px-4 py-2 rounded-2xl text-xs font-semibold border border-white/10 shadow-sm">📚 المنهج كاملاً دون حذف</span>
-                      <span className="bg-white/15 backdrop-blur-md px-4 py-2 rounded-2xl text-xs font-semibold border border-white/10 shadow-sm">🌟 خطة دراسية متكاملة</span>
-                      <span className="bg-white/15 backdrop-blur-md px-4 py-2 rounded-2xl text-xs font-semibold border border-white/10 shadow-sm">⏱️ تتبع ذكي لوقت الدراسة</span>
+                      <span className="bg-white/15 backdrop-blur-md px-4 py-2 rounded-2xl text-xs font-semibold border border-white/10 shadow-sm"> خطة دراسية متكاملة</span>
+                      <span className="bg-white/15 backdrop-blur-md px-4 py-2 rounded-2xl text-xs font-semibold border border-white/10 shadow-sm">️ تتبع ذكي لوقت الدراسة</span>
                     </div>
                   </div>
                 </div>
@@ -1216,200 +1137,9 @@ export default function App() {
                     </button>
                   ))}
                 </div>
-
-                {/* 📅 SECTION: WEEKLY STUDY PLANNER */}
-                <div className="mt-12 bg-white/95 dark:bg-gray-800/90 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 md:p-8 shadow-md">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-100 dark:border-slate-800 pb-5 text-right">
-                    <div className="flex items-center gap-3">
-                      <div className="text-4xl">🗓️</div>
-                      <div>
-                        <h3 className="text-2xl font-black text-gray-900 dark:text-white">جدول المذاكرة الأسبوعي التفاعلي</h3>
-                        <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">خطط لمذاكرة دروسك بانتظام وتصفحها مباشرة من جدولك الخاص</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => setShowPlannerModal(true)}
-                      className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-5 rounded-2xl transition shadow-md flex items-center justify-center gap-2 self-start md:self-auto text-sm"
-                    >
-                      <span>➕</span>
-                      <span>جدولة درس جديد</span>
-                    </button>
-                  </div>
-                  {studyPlan.length === 0 ? (
-                    <div className="text-center py-12 bg-slate-50 dark:bg-slate-950/40 border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl">
-                      <div className="text-5xl mb-3 opacity-60">📅</div>
-                      <h4 className="font-extrabold text-gray-800 dark:text-gray-300 mb-1.5 text-base">جدولك الدراسي فارغ حالياً</h4>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm mx-auto mb-5 leading-relaxed">
-                        قم بجدولة دروسك عبر الضغط على الزر أعلاه، أو اضغط على أيقونة الجدولة 📅 عند تصفح أي درس.
-                      </p>
-                      <button
-                        onClick={() => setShowPlannerModal(true)}
-                        className="bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-950/40 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-400 font-extrabold text-xs py-2 px-4 rounded-xl transition"
-                      >
-                        ابدأ التخطيط الآن
-                      </button>
-                    </div>
-                  ) : (
-                    <div>
-                      {/* Weekly Goals Progress Tracker */}
-                      {(() => {
-                        const { total, completed, percentage } = getWeeklyProgress();
-                        let feedback = '';
-                        if (percentage === 0) feedback = 'ابدأ بمذاكرة أولى حصصك اليوم لصنع انطلاقة قوية! 🚀';
-                        else if (percentage < 50) feedback = 'خطوة رائعة! استمر في تحقيق تقدمك ولا تتوقف. 💪';
-                        else if (percentage < 100) feedback = 'رائع جداً! شارف أسبوعك الدراسي على الاكتمال بنجاح. 🔥';
-                        else feedback = 'إنجاز أسطوري! أكملت كامل خطتك للأسبوع الحالي بنجاح! 🏆';
-                        return (
-                          <div className="bg-gradient-to-r from-indigo-500/10 to-violet-500/10 border border-indigo-100 dark:border-indigo-950 rounded-2xl p-4 mb-6 text-right">
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="text-xs font-bold text-gray-600 dark:text-gray-400">معدل الإنجاز الأسبوعي:</span>
-                              <span className="text-sm font-black text-indigo-600 dark:text-indigo-400">{percentage}%</span>
-                            </div>
-                            <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-3 overflow-hidden shadow-inner flex mb-2">
-                              <div
-                                className="bg-gradient-to-r from-teal-400 to-indigo-500 h-full rounded-full transition-all duration-1000 ease-out"
-                                style={{ width: `${percentage}%` }}
-                              />
-                            </div>
-                            <p className="text-xs font-bold text-gray-800 dark:text-gray-300 flex items-center justify-between flex-wrap gap-2">
-                              <span>🎯 أكملت {completed} من أصل {total} حصص مجدولة للأسبوع الحالي</span>
-                              <span className="text-[11px] text-indigo-500 dark:text-indigo-400 animate-pulse">{feedback}</span>
-                            </p>
-                          </div>
-                        );
-                      })()}
-
-                      {/* Desktop Weekly Grid / Mobile Interactive Tabs */}
-                      <div className="grid grid-cols-1 md:grid-cols-7 gap-4 text-right">
-                        {DAYS_OF_WEEK.map(dayObj => {
-                          const dayItems = studyPlan.filter(item => item.day === dayObj.key)
-                            .sort((a, b) => a.time.localeCompare(b.time));
-                          return (
-                            <div
-                              key={dayObj.key}
-                              className="bg-slate-50 dark:bg-slate-950/30 border border-slate-200/60 dark:border-slate-800/60 rounded-2xl p-4 flex flex-col justify-between"
-                            >
-                              <div>
-                                <div className="text-center pb-2 border-b border-slate-200/80 dark:border-slate-800/80 mb-3 flex items-center justify-between">
-                                  <span className="font-extrabold text-sm text-indigo-700 dark:text-indigo-400">
-                                    {dayObj.name}
-                                  </span>
-                                  <span className="text-[10px] bg-slate-200/60 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold px-2 py-0.5 rounded-full">
-                                    {dayItems.length}
-                                  </span>
-                                </div>
-                                {dayItems.length === 0 ? (
-                                  <p className="text-[10px] text-gray-500 dark:text-gray-500 text-center py-4 italic">لا يوجد حصص</p>
-                                ) : (
-                                  <div className="space-y-2.5">
-                                    {dayItems.map(item => (
-                                      <div
-                                        key={item.id}
-                                        className="bg-white dark:bg-gray-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800/80 shadow-sm relative group hover:border-indigo-400 dark:hover:border-indigo-900 transition flex flex-col justify-between text-right"
-                                      >
-                                        {/* Delete Button */}
-                                        <button
-                                          onClick={() => removeFromSchedule(item.id)}
-                                          className="absolute top-1 left-1 text-gray-400 hover:text-red-500 text-xs p-1"
-                                          title="إزالة"
-                                        >
-                                          ✕
-                                        </button>
-                                        <div className="pr-1 pl-3.5">
-                                          <div className="flex items-center gap-1 mb-1 flex-wrap">
-                                            <span className="text-xs">{item.subjectIcon || '📖'}</span>
-                                            <span className="text-[9px] font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-tight">
-                                              {item.subjectName || 'درس'}
-                                            </span>
-                                          </div>
-                                          {item.lessonId ? (
-                                            <button
-                                              onClick={() => {
-                                                // Navigate directly to scheduled lesson
-                                                const parts = item.curriculumKey?.split('-');
-                                                if (parts) {
-                                                  const sub = DB.subjects.find(s => s.id === parts[0]);
-                                                  const gr = DB.grades.find(g => parseInt(g.id.toString()) === parseInt(parts[1]));
-                                                  const tr = DB.terms.find(t => parseInt(t.id.toString()) === parseInt(parts[3]));
-                                                  let str = DB.streams.find(s => s.id === 'general');
-                                                  let pr = null;
-                                                  if (parts[2] !== 'general') {
-                                                    str = DB.streams.find(s => s.id === 'advanced');
-                                                    pr = DB.programs.find(p => p.id === parts[2]) || null;
-                                                  }
-                                                  const curriculum = DB.curriculum[item.curriculumKey || ''];
-                                                  const unit = curriculum?.units.find(u => u.id === item.unitId);
-                                                  const lesson = unit?.lessons.find(l => l.id === item.lessonId);
-                                                  if (lesson && unit && sub && gr && tr && str) {
-                                                    setHistory(prev => [...prev, { ...appState }]);
-                                                    setAppState({
-                                                      term: tr,
-                                                      stream: str,
-                                                      program: pr,
-                                                      grade: gr,
-                                                      subject: sub,
-                                                      unit,
-                                                      lesson
-                                                    });
-                                                  } else {
-                                                    showToastMsg('⚠️ عذراً، لم نتمكن من فتح هذا الدرس');
-                                                  }
-                                                }
-                                              }}
-                                              className="text-right font-black text-xs text-gray-900 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 block line-clamp-2 leading-snug mb-1 cursor-pointer"
-                                            >
-                                              {item.lessonTitle}
-                                            </button>
-                                          ) : (
-                                            <span className="font-bold text-xs text-gray-900 dark:text-gray-200 block mb-1">
-                                              {item.lessonTitle}
-                                            </span>
-                                          )}
-                                          {item.notes && (
-                                            <p className="text-[9px] text-gray-500 dark:text-gray-500 leading-tight mb-1">{item.notes}</p>
-                                          )}
-                                        </div>
-                                        {(() => {
-                                          let isRead = false;
-                                          if (item.unitId && item.lessonId && item.subjectId && item.gradeId && item.termId) {
-                                            const streamPart = item.programId ? item.programId : (item.streamId || 'general');
-                                            const key = `${item.subjectId}-${item.gradeId}-${streamPart}-${item.termId}-U${item.unitId}-L${item.lessonId}`;
-                                            isRead = progress[key]?.read || item.completed;
-                                          } else {
-                                            isRead = item.completed;
-                                          }
-                                          return (
-                                            <div className="mt-1.5 pt-1.5 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between text-[10px] font-bold">
-                                              <button
-                                                onClick={(e) => {
-                                                  e.stopPropagation();
-                                                  toggleStudyPlanItemCompletion(item.id);
-                                                }}
-                                                className={`px-1.5 py-0.5 rounded transition flex items-center gap-1 cursor-pointer font-bold ${isRead ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/25' : 'text-gray-500 dark:text-gray-500 hover:text-indigo-600'}`}
-                                                title={isRead ? 'إلغاء التحديد كمكتمل' : 'تحديد كمكتمل'}
-                                              >
-                                                <span>{isRead ? '✓ منجز' : '○ غير منجز'}</span>
-                                              </button>
-                                              <span className="text-gray-500 dark:text-gray-500 font-mono text-[9px]">⏱️ {item.time}</span>
-                                            </div>
-                                          );
-                                        })()}
-                                      </div>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-                </div>
               </div>
             )}
 
-            {/* VIEW 2: STREAMS (GENERAL vs ADVANCED) */}
             {appState.term && !appState.stream && (
               <div className="fade-in">
                 <div className="gradient-secondary rounded-3xl p-8 text-white mb-8 shadow-md">
@@ -1436,7 +1166,6 @@ export default function App() {
               </div>
             )}
 
-            {/* VIEW 3: PROGRAMS (INSPIRE vs BRIDGE for Advanced) */}
             {appState.term && appState.stream?.id === 'advanced' && !appState.program && (
               <div className="fade-in">
                 <div className="gradient-warm rounded-3xl p-8 text-white mb-8 shadow-md">
@@ -1452,7 +1181,7 @@ export default function App() {
                     >
                       {p.isEnglish && (
                         <div className="absolute top-4 left-4 bg-blue-500 text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">
-                          🇬🇧 English Content
+                          🇬 English Content
                         </div>
                       )}
                       <div className="text-6xl mb-4">{p.icon}</div>
@@ -1468,7 +1197,6 @@ export default function App() {
               </div>
             )}
 
-            {/* VIEW 4: GRADES (9, 10, 11, 12) */}
             {appState.term && appState.stream && (appState.stream.id !== 'advanced' || appState.program) && !appState.grade && (
               <div className="fade-in">
                 <div className="gradient-success rounded-3xl p-8 text-white mb-8 shadow-md">
@@ -1492,7 +1220,6 @@ export default function App() {
               </div>
             )}
 
-            {/* VIEW 5: SUBJECTS (PHYSICS, MATH, CHEMISTRY, BIOLOGY) */}
             {appState.term && appState.stream && (appState.stream.id !== 'advanced' || appState.program) && appState.grade && !appState.subject && (
               <div className="fade-in">
                 <div className="gradient-warm rounded-3xl p-8 text-white mb-8 shadow-md">
@@ -1506,7 +1233,6 @@ export default function App() {
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   {DB.subjects.map(s => {
-                    // Temporarily check if subject has contents in curriculum
                     const key = getSubjectUnitKeys(s.id);
                     const isAvailable = DB.curriculum[key] ? true : false;
                     return (
@@ -1518,7 +1244,7 @@ export default function App() {
                         <div className="text-5xl mb-3">{s.icon}</div>
                         <h4 className="font-extrabold text-lg text-gray-900 dark:text-white mb-2">{s.name}</h4>
                         <span className={`text-[10px] font-bold py-1 px-3 rounded-full ${isAvailable ? 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400'}`}>
-                          {isAvailable ? '✅ متاح حالياً' : '🚧 قريباً'}
+                          {isAvailable ? '✅ متاح حالياً' : ' قريباً'}
                         </span>
                       </button>
                     );
@@ -1527,7 +1253,6 @@ export default function App() {
               </div>
             )}
 
-            {/* VIEW 6: UNITS LIST */}
             {appState.term && appState.stream && appState.grade && appState.subject && !appState.unit && (
               <div className="fade-in">
                 {(() => {
@@ -1583,7 +1308,7 @@ export default function App() {
                                   </div>
                                   {unit.description && <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed mb-2">{unit.description}</p>}
                                   <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
-                                    📖 {lessonCount} {isEnglish ? 'lessons' : 'دروس'} {compRate > 0 && `• انجاز ${compRate}%`}
+                                     {lessonCount} {isEnglish ? 'lessons' : 'دروس'} {compRate > 0 && `• انجاز ${compRate}%`}
                                   </span>
                                   {compRate > 0 && (
                                     <div className="lesson-progress-bar mt-2">
@@ -1606,7 +1331,6 @@ export default function App() {
               </div>
             )}
 
-            {/* VIEW 7: LESSONS LIST */}
             {appState.term && appState.stream && appState.grade && appState.subject && appState.unit && !appState.lesson && (
               <div className="fade-in">
                 {(() => {
@@ -1660,7 +1384,7 @@ export default function App() {
                                   className="favorite-btn text-2xl p-2 focus:outline-none hover:scale-110 active:scale-95 transition"
                                   title="المفضلة"
                                 >
-                                  {isFav ? '❤️' : '🤍'}
+                                  {isFav ? '❤️' : ''}
                                 </button>
                                 <ChevronRight className="w-5 h-5 text-violet-600 dark:text-violet-400 rotate-180" />
                               </div>
@@ -1674,7 +1398,6 @@ export default function App() {
               </div>
             )}
 
-            {/* VIEW 8: LESSON DETAILS VIEW */}
             {appState.term && appState.stream && appState.grade && appState.subject && appState.unit && appState.lesson && (
               <div className="fade-in">
                 {(() => {
@@ -1688,13 +1411,12 @@ export default function App() {
                   const c = appState.lesson.content;
                   const shareUrl = appState.lesson.lessonUrl || window.location.href;
 
-                  // Render mathematical sections
                   const sectionsHTML = c?.sections.map((s, idx) => {
                     if (s.type === 'formula') {
                       return (
                         <div key={idx} className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-amber-950/20 dark:to-yellow-950/15 rounded-2xl p-6 my-5 border-2 border-indigo-200 dark:border-amber-500/40 text-center shadow-sm">
-                          <div className="text-xs text-indigo-600 dark:text-amber-400 mb-2.5 font-bold uppercase tracking-wider">{s.title}</div>
-                          <div className="formula text-2xl md:text-4xl font-extrabold text-indigo-800 dark:text-amber-300">{s.content as string}</div>
+                          <div className="text-xs text-indigo-900 dark:text-amber-300 mb-2.5 font-bold uppercase tracking-wider">{s.title}</div>
+                          <div className="formula text-2xl md:text-4xl font-extrabold text-indigo-900 dark:text-amber-200">{s.content as string}</div>
                         </div>
                       );
                     } else if (s.type === 'table') {
@@ -1706,7 +1428,7 @@ export default function App() {
                               <thead>
                                 <tr className="bg-gray-100 dark:bg-gray-800">
                                   {s.headers?.map((h, hIdx) => (
-                                    <th key={hIdx} className="px-4 py-3 text-right text-xs font-bold text-gray-800 dark:text-amber-400 border-b border-gray-200 dark:border-gray-700">
+                                    <th key={hIdx} className="px-4 py-3 text-right text-xs font-bold text-gray-900 dark:text-amber-300 border-b border-gray-200 dark:border-gray-700">
                                       {h}
                                     </th>
                                   ))}
@@ -1716,7 +1438,7 @@ export default function App() {
                                 {s.rows?.map((row, rIdx) => (
                                   <tr key={rIdx} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition">
                                     {row.map((cell, cIdx) => (
-                                      <td key={cIdx} className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200 border-b border-gray-100 dark:border-gray-800">
+                                      <td key={cIdx} className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-800">
                                         {cell}
                                       </td>
                                     ))}
@@ -1730,12 +1452,12 @@ export default function App() {
                     } else if (s.type === 'bullets') {
                       return (
                         <div key={idx} className="my-5 bg-blue-50/60 dark:bg-amber-950/10 rounded-2xl p-5 border-l-4 border-indigo-500 dark:border-amber-500 shadow-sm text-right">
-                          <h4 className="font-extrabold text-lg mb-3 text-indigo-800 dark:text-amber-300">{s.title}</h4>
+                          <h4 className="font-extrabold text-lg mb-3 text-indigo-900 dark:text-amber-300">{s.title}</h4>
                           <ul className="space-y-3">
                             {(s.content as string[]).map((item, bIdx) => (
                               <li key={bIdx} className="flex items-start gap-2.5">
                                 <span className="text-indigo-600 dark:text-amber-400 mt-1 flex-shrink-0">✓</span>
-                                <span className="text-gray-800 dark:text-amber-100 text-sm leading-relaxed">{item}</span>
+                                <span className="text-gray-900 dark:text-amber-100 text-sm leading-relaxed">{item}</span>
                               </li>
                             ))}
                           </ul>
@@ -1745,7 +1467,7 @@ export default function App() {
                       return (
                         <div key={idx} className="my-4">
                           <h4 className="font-bold text-base mb-1.5 text-gray-900 dark:text-amber-300">{s.title}</h4>
-                          <p className="text-gray-800 dark:text-gray-200 text-sm leading-relaxed">{s.content as string}</p>
+                          <p className="text-gray-900 dark:text-gray-200 text-sm leading-relaxed">{s.content as string}</p>
                         </div>
                       );
                     }
@@ -1754,7 +1476,6 @@ export default function App() {
                   if (isFocusMode) {
                     return (
                       <div className="max-w-3xl mx-auto py-8 px-4 md:px-8 bg-amber-50/55 dark:bg-gray-950 border border-amber-200/60 dark:border-slate-800 rounded-3xl shadow-xl text-right transition-colors duration-500">
-                        {/* Focus Mode Top Header */}
                         <div className="flex items-center justify-between border-b border-amber-200/50 dark:border-slate-800 pb-4 mb-6">
                           <button
                             onClick={() => setIsFocusMode(false)}
@@ -1772,7 +1493,6 @@ export default function App() {
                           </div>
                         </div>
 
-                        {/* Distraction-free Pomodoro inside Focus Mode */}
                         <div className="bg-amber-100/40 dark:bg-slate-900/40 p-4 rounded-2xl mb-6 border border-amber-200/30 dark:border-slate-800/50 flex flex-col sm:flex-row items-center justify-between gap-4">
                           <div className="text-right">
                             <span className="text-[10px] text-amber-700 dark:text-amber-400 font-extrabold block uppercase tracking-wider mb-0.5">مؤقت المذاكرة (Pomodoro)</span>
@@ -1788,7 +1508,7 @@ export default function App() {
                               onClick={() => setPomodoroIsActive(!pomodoroIsActive)}
                               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${pomodoroIsActive ? 'bg-amber-600 text-white hover:bg-amber-700' : 'bg-indigo-600 text-white hover:bg-indigo-700'}`}
                             >
-                              {pomodoroIsActive ? '⏸️ إيقاف مؤقت' : '▶️ ابدأ التركيز'}
+                              {pomodoroIsActive ? '️ إيقاف مؤقت' : '▶️ ابدأ التركيز'}
                             </button>
                             <button
                               onClick={() => {
@@ -1802,15 +1522,12 @@ export default function App() {
                           </div>
                         </div>
 
-                        {/* Content Body */}
-                        <div className="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 leading-relaxed text-base tracking-wide space-y-6">
+                        <div className="prose dark:prose-invert max-w-none text-gray-900 dark:text-gray-200 leading-relaxed text-base tracking-wide space-y-6">
                           {c ? (
                             <div>
-                              {/* Intro Section */}
                               <div className="mb-6 bg-amber-100/10 dark:bg-slate-900/10 p-5 rounded-2xl border-r-4 border-amber-500">
                                 <p className="text-base font-bold text-amber-950 dark:text-amber-200">{c.intro}</p>
                               </div>
-                              {/* Breakdown */}
                               <div className="space-y-6">
                                 {sectionsHTML}
                               </div>
@@ -1822,16 +1539,15 @@ export default function App() {
                           )}
                         </div>
 
-                        {/* Student Notes section right inside Focus Mode */}
                         <div className="mt-8 pt-6 border-t border-amber-200/50 dark:border-slate-800 text-right">
                           <label className="block text-xs font-black text-amber-900 dark:text-amber-400 mb-2">✍️ سجل ملاحظاتك وأفكارك حول هذا الدرس هنا:</label>
                           <textarea
                             value={studentNotes[lessonKey || ''] || ''}
                             onChange={(e) => updateStudentNote(lessonKey || '', e.target.value)}
                             placeholder="اكتب تعليقاتك، القوانين الأساسية، أو أي ملاحظات تريد تذكرها ليلة الامتحان..."
-                            className="w-full bg-white dark:bg-slate-900 border border-amber-200 dark:border-slate-800 rounded-xl p-3.5 text-sm focus:outline-none focus:border-amber-500 text-right text-gray-800 dark:text-gray-200 min-h-[120px] transition shadow-inner"
+                            className="w-full bg-white dark:bg-slate-900 border border-amber-200 dark:border-slate-800 rounded-xl p-3.5 text-sm focus:outline-none focus:border-amber-500 text-right text-gray-900 dark:text-gray-200 min-h-[120px] transition shadow-inner"
                           />
-                          <span className="text-[10px] text-gray-600 dark:text-gray-400 block mt-1.5 font-semibold">💾 يتم الحفظ تلقائياً في مذكرة المراجعة الذاتية الخاصة بك</span>
+                          <span className="text-[10px] text-gray-600 dark:text-gray-400 block mt-1.5 font-semibold"> يتم الحفظ تلقائياً في مذكرة المراجعة الذاتية الخاصة بك</span>
                         </div>
                       </div>
                     );
@@ -1839,9 +1555,7 @@ export default function App() {
 
                   return (
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                      {/* Left side: Lesson Content */}
                       <div className="lg:col-span-2 space-y-6">
-                        {/* Title Panel */}
                         <div className="gradient-teal text-white rounded-3xl p-6 md:p-8 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
                           <div className="flex items-center gap-4">
                             <span className="text-6xl bg-white/10 p-3 rounded-2xl backdrop-blur-sm select-none">{appState.lesson.icon}</span>
@@ -1849,7 +1563,7 @@ export default function App() {
                               <div className="flex items-center gap-2 flex-wrap mb-1.5">
                                 <h2 className="text-2xl md:text-3xl font-extrabold">{appState.lesson.title}</h2>
                                 {isRead && <span className="bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">✓ مقروء</span>}
-                                {isDone && <span className="bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">🏆 مكتمل</span>}
+                                {isDone && <span className="bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm"> مكتمل</span>}
                               </div>
                               <p className="opacity-90 text-xs">
                                 {appState.subject.name} • {appState.grade.name} • {appState.unit.name}
@@ -1863,7 +1577,6 @@ export default function App() {
                             </div>
                           </div>
                           <div className="flex items-center gap-2 self-start md:self-auto">
-                            {/* Focus Mode Button */}
                             <button
                               onClick={() => {
                                 setIsFocusMode(true);
@@ -1877,7 +1590,6 @@ export default function App() {
                               <span>👁️</span>
                               <span>وضع التركيز</span>
                             </button>
-                            {/* Favorite Button */}
                             <button
                               onClick={() => toggleFavorite(appState.lesson!, appState.unit!)}
                               className={`p-2.5 rounded-xl border border-white/20 backdrop-blur-md transition flex items-center gap-1.5 text-xs font-bold ${isFav ? 'bg-white text-rose-500' : 'bg-white/10 text-white hover:bg-white/20'}`}
@@ -1886,7 +1598,6 @@ export default function App() {
                               <span>❤️</span>
                               <span>{isFav ? 'مفضل' : 'تفضيل'}</span>
                             </button>
-                            {/* Share button */}
                             <button
                               onClick={() => setShowShareModal({ title: appState.lesson!.title, url: shareUrl })}
                               className="bg-white/10 hover:bg-white/20 p-2.5 rounded-xl border border-white/20 backdrop-blur-md transition flex items-center gap-1.5 text-xs font-bold"
@@ -1898,32 +1609,28 @@ export default function App() {
                           </div>
                         </div>
 
-                        {/* Content sections */}
                         {c ? (
                           <div className="space-y-6">
-                            {/* Intro Section */}
                             <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl shadow-md border border-slate-100 dark:border-slate-800">
-                              <h3 className="text-lg font-black text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                              <h3 className="text-lg font-black text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                                 <span className="text-xl">💡</span>
                                 {isEnglish ? 'Lesson Introduction' : 'مقدمة الدرس'}
                               </h3>
                               <div className="bg-gradient-to-r from-teal-50/50 to-indigo-50/30 dark:from-teal-950/10 dark:to-indigo-950/10 border-r-4 border-teal-500 p-4 rounded-xl">
-                                <p className="text-gray-800 dark:text-gray-300 text-sm leading-relaxed font-medium">
+                                <p className="text-gray-900 dark:text-gray-100 text-sm leading-relaxed font-medium">
                                   {c.intro}
                                 </p>
                               </div>
                             </div>
 
-                            {/* Detailed Sections */}
                             <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl shadow-md border border-slate-100 dark:border-slate-800">
-                              <h3 className="text-lg font-black text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                              <h3 className="text-lg font-black text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                                 <span className="text-xl">📂</span>
                                 {isEnglish ? 'Lesson Breakdown' : 'المحتوى والتبسيط والتحليل'}
                               </h3>
                               {sectionsHTML}
                             </div>
 
-                            {/* Golden Notes Box for Normal Mode */}
                             <div className="bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/30 dark:from-slate-900 dark:via-gray-950 dark:to-amber-950/20 p-6 md:p-8 rounded-3xl shadow-lg border-2 border-indigo-100 dark:border-amber-500/30 text-right space-y-4">
                               <div className="flex items-center justify-between border-b border-indigo-100 dark:border-amber-500/20 pb-3">
                                 <h3 className="font-black text-lg text-indigo-900 dark:text-amber-400 flex items-center gap-2">
@@ -1967,7 +1674,6 @@ export default function App() {
                         )}
                       </div>
 
-                      {/* Right side: Action sidebar */}
                       <div className="space-y-6">
                         <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl shadow-md border border-slate-100 dark:border-slate-800 sticky top-24">
                           <h3 className="font-extrabold text-base text-gray-900 dark:text-white mb-4 pb-2 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
@@ -2006,7 +1712,6 @@ export default function App() {
                                 <span>{appState.lesson.lessonTitle || (isEnglish ? 'Open Lesson Explanation' : 'افتح شرح الدرس')}</span>
                                 <span className="text-sm">↗</span>
                               </button>
-                              {/* Quick Share Explanation Links */}
                               {appState.lesson.lessonUrl && (
                                 <div className="flex items-center justify-center gap-3 mt-1.5 text-xs text-gray-600 dark:text-gray-400">
                                   <span>{isEnglish ? 'Share explanation:' : 'مشاركة الشرح:'}</span>
@@ -2052,7 +1757,6 @@ export default function App() {
                                 <span>{appState.lesson.examTitle || (isEnglish ? 'Take the Quiz' : 'ابدأ اختبار الحصة')}</span>
                                 <span className="text-sm">↗</span>
                               </button>
-                              {/* Quick Share Exam Links */}
                               {appState.lesson.examUrl && (
                                 <div className="flex items-center justify-center gap-3 mt-1.5 text-xs text-gray-600 dark:text-gray-400">
                                   <span>{isEnglish ? 'Share quiz:' : 'مشاركة الاختبار:'}</span>
@@ -2087,21 +1791,19 @@ export default function App() {
                               )}
                             </div>
 
-                            {/* Add to weekly planner button */}
                             <button
                               onClick={() => {
                                 setPlannerLessonKey(`${getCurriculumKey()}-U${appState.unit!.id}-L${appState.lesson!.id}`);
                                 setShowPlannerModal(true);
                               }}
-                              className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white py-3 rounded-2xl font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-sm border border-slate-200/50 dark:border-slate-700/50"
+                              className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-900 dark:text-white py-3 rounded-2xl font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-sm border border-slate-200/50 dark:border-slate-700/50"
                               title="جدولة أسبوعية"
                             >
-                              <span>📅</span>
+                              <span></span>
                               <span>جدولة الدرس في جدول المذاكرة الأسبوعي</span>
                             </button>
                           </div>
 
-                          {/* Quick Actions checklist */}
                           <div className="mt-6 border-t border-slate-100 dark:border-slate-800 pt-4 flex items-center justify-between text-xs font-bold text-gray-600 dark:text-gray-500">
                             <span>تعيين كقراءة:</span>
                             <button
@@ -2113,10 +1815,9 @@ export default function App() {
                           </div>
                         </div>
 
-                        {/* Interactive tips */}
                         <div className="bg-amber-50/50 dark:bg-amber-950/15 border-2 border-amber-200 dark:border-amber-900 rounded-3xl p-5 shadow-sm text-right">
                           <h4 className="font-extrabold text-amber-900 dark:text-amber-400 mb-1.5 flex items-center gap-2">
-                            <span>💡</span> نصيحة المذاكرة الفعالة
+                            <span></span> نصيحة المذاكرة الفعالة
                           </h4>
                           <p className="text-gray-800 dark:text-gray-300 text-xs leading-relaxed">
                             {isEnglish
@@ -2125,7 +1826,6 @@ export default function App() {
                           </p>
                         </div>
 
-                        {/* Keyboard shortcut help */}
                         <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-3xl text-right">
                           <h4 className="font-bold text-xs text-gray-700 dark:text-gray-400 mb-3 flex items-center gap-1.5">
                             <span>⌨️</span> اختصارات لوحة المفاتيح المتاحة
@@ -2146,14 +1846,13 @@ export default function App() {
                           </div>
                         </div>
 
-                        {/* Interactive Pomodoro Timer Card */}
                         <div className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-slate-800 p-5 rounded-3xl shadow-sm text-right space-y-4">
-                          <h4 className="font-extrabold text-slate-900 dark:text-white flex items-center gap-2 text-sm border-b border-slate-100 dark:border-slate-800 pb-2">
+                          <h4 className="font-extrabold text-gray-900 dark:text-white flex items-center gap-2 text-sm border-b border-slate-100 dark:border-slate-800 pb-2">
                             <span>⏱️</span> مؤقت بومودورو التفاعلي
                           </h4>
                           <div className="flex flex-col items-center justify-center py-2 bg-slate-50 dark:bg-slate-950/40 rounded-2xl border border-slate-100 dark:border-slate-800/50">
                             <span className="text-[10px] font-extrabold uppercase tracking-wide px-2 py-0.5 rounded-full mb-1 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400">
-                              {pomodoroMode === 'study' ? 'جلسة دراسة مركزة 📖' : 'فترة راحة قصيرة ☕'}
+                              {pomodoroMode === 'study' ? 'جلسة دراسة مركزة 📖' : 'فترة راحة قصيرة '}
                             </span>
                             <div className="text-4xl font-mono font-black text-gray-900 dark:text-gray-100 mb-2">
                               {Math.floor(pomodoroSeconds / 60).toString().padStart(2, '0')}:{Math.floor(pomodoroSeconds % 60).toString().padStart(2, '0')}
@@ -2163,7 +1862,7 @@ export default function App() {
                                 onClick={() => setPomodoroIsActive(!pomodoroIsActive)}
                                 className={`px-4 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1 shadow-sm ${pomodoroIsActive ? 'bg-amber-500 hover:bg-amber-600 text-white' : 'bg-indigo-600 hover:bg-indigo-700 text-white'}`}
                               >
-                                <span>{pomodoroIsActive ? '⏸️ إيقاف' : '▶️ ابدأ'}</span>
+                                <span>{pomodoroIsActive ? '️ إيقاف' : '▶️ ابدأ'}</span>
                               </button>
                               <button
                                 onClick={() => {
@@ -2172,7 +1871,7 @@ export default function App() {
                                 }}
                                 className="bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-800 dark:text-gray-300 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer"
                               >
-                                🔄 إعادة ضبط
+                                 إعادة ضبط
                               </button>
                             </div>
                           </div>
@@ -2205,10 +1904,9 @@ export default function App() {
                           )}
                         </div>
 
-                        {/* Student Notes Widget */}
                         <div className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-amber-500/30 p-5 rounded-3xl shadow-sm text-right space-y-3">
-                          <h4 className="font-extrabold text-slate-900 dark:text-amber-400 flex items-center gap-2 text-sm border-b border-slate-100 dark:border-amber-500/20 pb-2">
-                            <span>✍️</span> مذكرتي الشخصية
+                          <h4 className="font-extrabold text-gray-900 dark:text-amber-400 flex items-center gap-2 text-sm border-b border-slate-100 dark:border-amber-500/20 pb-2">
+                            <span>️</span> مذكرتي الشخصية
                           </h4>
                           <p className="text-[10px] text-gray-600 dark:text-gray-400 leading-normal">
                             دون ملاحظاتك السريعة، القوانين الصعبة أو الأسئلة الشائعة للرجوع إليها لاحقاً.
@@ -2220,7 +1918,7 @@ export default function App() {
                             className="w-full bg-slate-50 dark:bg-amber-950/15 border border-slate-200/60 dark:border-amber-500/30 rounded-2xl p-3 text-xs focus:outline-none focus:border-indigo-500 dark:focus:border-amber-400 text-right text-gray-900 dark:text-amber-100 placeholder-gray-500 dark:placeholder-amber-600/70 min-h-[100px] transition font-sans shadow-inner"
                           />
                           <div className="text-[10px] text-indigo-600 dark:text-amber-400 font-bold flex items-center justify-between">
-                            <span>💾 يتم الحفظ تلقائياً</span>
+                            <span> يتم الحفظ تلقائياً</span>
                             <span className="opacity-80">متاحة في المراجعة الذاتية 👆</span>
                           </div>
                         </div>
@@ -2234,7 +1932,6 @@ export default function App() {
         )}
       </main>
 
-      {/* GLOBAL PWA INSTALLATION CARD FOR DEVICES */}
       {!isFocusMode && (
         <div className="max-w-7xl mx-auto px-4 md:px-6 mb-8 mt-4">
           <div className="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-indigo-500/10 border border-indigo-100 dark:border-indigo-950/60 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6 text-right">
@@ -2260,7 +1957,6 @@ export default function App() {
         </div>
       )}
 
-      {/* 4. FOOTER */}
       <footer className="bg-slate-900 text-white py-10 mt-auto border-t border-slate-800 relative z-10">
         <div className="max-w-7xl mx-auto px-6 text-center space-y-4">
           <div className="flex items-center justify-center gap-3 select-none">
@@ -2278,7 +1974,6 @@ export default function App() {
         </div>
       </footer>
 
-      {/* 5. FLOATING INSTALL BUTTON */}
       {installPrompt && (
         <div className="fixed bottom-6 left-6 z-40 animate-bounce">
           <button
@@ -2293,7 +1988,6 @@ export default function App() {
         </div>
       )}
 
-      {/* 6. TOAST BANNER OVERLAY */}
       <AnimatePresence>
         {toast && (
           <motion.div
@@ -2307,10 +2001,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* ========================================== */}
-      {/* 7. ALL MODAL WINDOWS (MODAL CONTAINER) */}
-      {/* ========================================== */}
-      {/* MODAL 1: FAVORITES BANNER */}
       {showFavoritesModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" onClick={() => setShowFavoritesModal(false)}>
           <div
@@ -2318,7 +2008,7 @@ export default function App() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4 flex-row-reverse">
-              <h3 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+              <h3 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
                 <span>❤️</span> الدروس المفضلة ({favorites.length})
               </h3>
               <button onClick={() => setShowFavoritesModal(false)} className="text-2xl text-gray-400 hover:text-gray-600 dark:hover:text-white cursor-pointer select-none">×</button>
@@ -2335,9 +2025,6 @@ export default function App() {
                   <div
                     key={f.key}
                     onClick={() => {
-                      // Extract context from key
-                      // key style: subject-grade-stream-term-U[id]-L[id]
-                      // e.g. math-12-inspire-3-U1-L2
                       const parts = f.key.split('-');
                       if (parts.length >= 6) {
                         const termId = parseInt(parts[3]);
@@ -2350,7 +2037,6 @@ export default function App() {
                         const targetSubject = DB.subjects.find(s => s.id === subjectId);
                         const targetStream = DB.streams.find(s => s.id === streamId);
                         const targetProgram = programId ? DB.programs.find(p => p.id === programId) : null;
-                        // Parse unit and lesson IDs from U[id] and L[id]
                         const uPart = parts[parts.length - 2];
                         const lPart = parts[parts.length - 1];
                         const unitId = parseInt(uPart.replace('U', ''));
@@ -2386,7 +2072,6 @@ export default function App() {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        // Find matching lesson & unit from database to call existing toggleFavorite
                         const parts = f.key.split('-');
                         const uPart = parts[parts.length - 2];
                         const lPart = parts[parts.length - 1];
@@ -2399,7 +2084,6 @@ export default function App() {
                         if (lesson && unit) {
                           toggleFavorite(lesson, unit);
                         } else {
-                          // fallback filter
                           setFavorites(prev => {
                             const upd = prev.filter(item => item.key !== f.key);
                             localStorage.setItem('4u_favorites', JSON.stringify(upd));
@@ -2420,7 +2104,6 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL 2: USER METRICS & STATISTICS */}
       {showStatsModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" onClick={() => setShowStatsModal(false)}>
           <div
@@ -2428,12 +2111,11 @@ export default function App() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-5 flex-row-reverse">
-              <h3 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+              <h3 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
                 <span>📊</span> إحصائياتي الدراسية
               </h3>
               <button onClick={() => setShowStatsModal(false)} className="text-2xl text-gray-400 hover:text-gray-600 dark:hover:text-white cursor-pointer select-none">×</button>
             </div>
-            {/* Grid of metrics */}
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="gradient-primary text-white p-4 rounded-2xl text-center shadow-md">
                 <span className="text-3xl block mb-1">📖</span>
@@ -2453,12 +2135,11 @@ export default function App() {
                 <div className="text-[10px] opacity-80 font-bold">وقت الدراسة الفعلي</div>
               </div>
               <div className="gradient-warm text-slate-900 p-4 rounded-2xl text-center shadow-md">
-                <span className="text-3xl block mb-1">🏆</span>
+                <span className="text-3xl block mb-1"></span>
                 <span className="text-2xl font-black block">{stats.completionRate}%</span>
                 <span className="text-sm opacity-90 font-bold">نسبة الإنجاز الإجمالية</span>
               </div>
             </div>
-            {/* Completion indicator */}
             <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-2xl mb-6 border border-gray-200 dark:border-gray-700">
               <div className="flex justify-between items-center mb-2">
                 <span className="font-bold text-sm text-gray-800 dark:text-gray-300">التقدم الإجمالي للمناهج</span>
@@ -2468,7 +2149,6 @@ export default function App() {
                 <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all" style={{ width: `${stats.completionRate}%` }} />
               </div>
             </div>
-            {/* Certificate Unlock Banner */}
             {stats.totalExams > 0 ? (
               <button
                 onClick={() => {
@@ -2477,7 +2157,7 @@ export default function App() {
                 }}
                 className="w-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-900 py-3.5 rounded-2xl font-black transition flex items-center justify-center gap-2 shadow-lg cursor-pointer"
               >
-                <span>🏆</span>
+                <span></span>
                 <span>عرض شهادة الإتمام والتقدير</span>
               </button>
             ) : (
@@ -2489,7 +2169,6 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL 3: CERTIFICATE GENERATOR */}
       {showCertificateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto" onClick={() => setShowCertificateModal(false)}>
           <div
@@ -2497,12 +2176,11 @@ export default function App() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-5 flex-row-reverse">
-              <h3 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+              <h3 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
                 <span>🏆</span> شهادة التفوق والتقدير الرقمية
               </h3>
               <button onClick={() => setShowCertificateModal(false)} className="text-2xl text-gray-400 hover:text-gray-600 dark:hover:text-white cursor-pointer select-none">×</button>
             </div>
-            {/* Student Name Input */}
             <div className="mb-6">
               <label className="block text-sm font-bold text-gray-800 dark:text-gray-300 mb-2">أدخل اسم الطالب/الطالبة لإصدار الشهادة:</label>
               <input
@@ -2513,7 +2191,6 @@ export default function App() {
                 className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 px-4 text-gray-900 dark:text-white focus:outline-none focus:border-amber-400 font-bold text-center"
               />
             </div>
-            {/* Certificate layout block */}
             <div id="print-certificate-area" className="certificate rounded-2xl shadow-inner relative overflow-hidden mb-6 p-8 border-[6px] border-double border-amber-600/60 dark:border-amber-500/60 text-center">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.1),transparent_70%)] pointer-events-none" />
               <div className="text-6xl mb-4 select-none">🏆</div>
@@ -2594,7 +2271,6 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL 4: SHARE PANEL */}
       {showShareModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" onClick={() => setShowShareModal(null)}>
           <div
@@ -2602,7 +2278,7 @@ export default function App() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-5 flex-row-reverse">
-              <h3 className="text-lg font-black text-slate-900 dark:text-white flex items-center gap-1.5">
+              <h3 className="text-lg font-black text-gray-900 dark:text-white flex items-center gap-1.5">
                 <span>📤</span> مشاركة الدرس
               </h3>
               <button onClick={() => setShowShareModal(null)} className="text-2xl text-gray-400 hover:text-gray-600 dark:hover:text-white cursor-pointer select-none">×</button>
@@ -2610,7 +2286,6 @@ export default function App() {
             <p className="text-xs text-gray-600 dark:text-gray-400 text-center mb-5 leading-relaxed">
               شارك هذا الدرس وادعم مسيرة التفوق والتحصيل لزملائك!
             </p>
-            {/* Quick Share buttons */}
             <div className="grid grid-cols-2 gap-3 mb-5">
               <a
                 href={`https://wa.me/?text=${encodeURIComponent(`📚 ${showShareModal.title}\nمنصة 4U التعليمية: ${showShareModal.url}`)}`}
@@ -2631,7 +2306,6 @@ export default function App() {
                 <span>تليجرام</span>
               </a>
             </div>
-            {/* Copyable link input */}
             <div className="flex gap-2">
               <button
                 onClick={() => {
@@ -2658,7 +2332,6 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL 5: STUDY PLANNER MODAL */}
       {showPlannerModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto" onClick={() => setShowPlannerModal(false)}>
           <div
@@ -2666,8 +2339,8 @@ export default function App() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-5 flex-row-reverse">
-              <h3 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-                <span>📅</span> جدولة حصة مذاكرة أسبوعية
+              <h3 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
+                <span></span> جدولة حصة مذاكرة أسبوعية
               </h3>
               <button onClick={() => setShowPlannerModal(false)} className="text-2xl text-gray-400 hover:text-gray-600 dark:hover:text-white cursor-pointer select-none">×</button>
             </div>
@@ -2690,7 +2363,6 @@ export default function App() {
                 }
               }
               if (!lessonTitle) {
-                // If they typed a custom title
                 const customInput = (document.getElementById('custom-lesson-title-input') as HTMLInputElement)?.value || '';
                 if (!customInput.trim()) {
                   showToastMsg('⚠️ يرجى اختيار درس أو كتابة عنوان مخصص');
@@ -2714,12 +2386,10 @@ export default function App() {
                 subjectName,
                 subjectIcon
               });
-              // Reset form & close
               setPlannerLessonKey('');
               setPlannerNotes('');
               setShowPlannerModal(false);
             }} className="space-y-4">
-              {/* Day Selection */}
               <div>
                 <label className="block text-sm font-bold text-gray-800 dark:text-gray-300 mb-2">اليوم:</label>
                 <select
@@ -2732,7 +2402,6 @@ export default function App() {
                   ))}
                 </select>
               </div>
-              {/* Time Selection */}
               <div>
                 <label className="block text-sm font-bold text-gray-800 dark:text-gray-300 mb-2">الوقت:</label>
                 <input
@@ -2743,7 +2412,6 @@ export default function App() {
                   required
                 />
               </div>
-              {/* Lesson Selection from curriculum */}
               <div>
                 <label className="block text-sm font-bold text-gray-800 dark:text-gray-300 mb-2">اختر درس من المناهج:</label>
                 <select
@@ -2753,7 +2421,6 @@ export default function App() {
                 >
                   <option value="">-- اختر من القائمة أو اختر موضوعاً مخصصاً --</option>
                   <option value="custom">✍️ مذاكرة موضوع أو مادة مخصصة</option>
-                  {/* Stagger lessons by subject */}
                   {(() => {
                     const lessons = getAllAvailableLessons();
                     return lessons.map(item => {
@@ -2767,7 +2434,6 @@ export default function App() {
                   })()}
                 </select>
               </div>
-              {/* If custom is selected or no lesson is selected, show custom input */}
               {(!plannerLessonKey || plannerLessonKey === 'custom') && (
                 <div className="fade-in">
                   <label className="block text-sm font-bold text-gray-800 dark:text-gray-300 mb-2">عنوان الدرس المخصص أو المادة:</label>
@@ -2779,7 +2445,6 @@ export default function App() {
                   />
                 </div>
               )}
-              {/* Additional Notes */}
               <div>
                 <label className="block text-sm font-bold text-gray-800 dark:text-gray-300 mb-2">ملاحظات مخصصة (اختياري):</label>
                 <textarea
@@ -2810,7 +2475,6 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL 6: STUDENT SELF-SUMMARY NOTES REVIEWER */}
       {showSummaryNotesModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto" onClick={() => setShowSummaryNotesModal(false)}>
           <div
@@ -2818,7 +2482,7 @@ export default function App() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4 flex-row-reverse">
-              <h3 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+              <h3 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
                 <span>📚</span> مذكرة المراجعة الذاتية للملاحظات
               </h3>
               <button onClick={() => setShowSummaryNotesModal(false)} className="text-2xl text-gray-400 hover:text-gray-600 dark:hover:text-white cursor-pointer select-none">×</button>
@@ -2853,12 +2517,11 @@ export default function App() {
                       const displayUnit = matched ? matched.unit.name : 'الفصل التعليمي';
                       return (
                         <div key={key} className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-amber-500/20 rounded-2xl p-4 text-right relative group hover:border-indigo-400 dark:hover:border-amber-400 transition shadow-sm">
-                          {/* Clear Note button */}
                           <button
                             onClick={() => {
                               if (confirm('هل أنت متأكد من رغبتك في حذف هذه الملاحظة؟')) {
                                 updateStudentNote(key, '');
-                                showToastMsg('🗑️ تم حذف الملاحظة');
+                                showToastMsg('️ تم حذف الملاحظة');
                               }
                             }}
                             className="absolute top-3 left-3 text-gray-500 hover:text-rose-500 text-xs transition p-1 cursor-pointer"
@@ -2874,7 +2537,6 @@ export default function App() {
                             {matched && (
                               <button
                                 onClick={() => {
-                                  // Navigate directly to that lesson
                                   const parts = matched.curriculumKey.split('-');
                                   const sub = matched.subject;
                                   const gr = matched.grade;
@@ -2969,7 +2631,6 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL 7: DAILY STUDY REMINDER SETTING */}
       {showReminderSettingModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" onClick={() => setShowReminderSettingModal(false)}>
           <div
@@ -2977,13 +2638,12 @@ export default function App() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-5 flex-row-reverse">
-              <h3 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+              <h3 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
                 <span>🔔</span> ضبط المنبه والتذكير اليومي
               </h3>
               <button onClick={() => setShowReminderSettingModal(false)} className="text-2xl text-gray-400 hover:text-gray-600 dark:hover:text-white cursor-pointer select-none">×</button>
             </div>
             <div className="space-y-4 text-right">
-              {/* Toggle Switch */}
               <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/50 dark:border-slate-800/50">
                 <div className="text-right">
                   <span className="font-extrabold text-sm block text-gray-900 dark:text-gray-200">تفعيل التذكير التلقائي</span>
@@ -2996,7 +2656,6 @@ export default function App() {
                   className="w-10 h-6 bg-slate-200 rounded-full appearance-none checked:bg-indigo-600 relative transition-colors duration-300 cursor-pointer before:content-[''] before:absolute before:w-5 before:h-5 before:bg-white before:rounded-full before:top-0.5 before:right-0.5 checked:before:translate-x-[-16px] before:transition-transform before:duration-300 shadow-sm"
                 />
               </div>
-              {/* Time Picker */}
               <div>
                 <label className="block text-xs font-black text-gray-800 dark:text-gray-300 mb-2">اختر وقت التنبيه اليومي:</label>
                 <input
@@ -3006,7 +2665,6 @@ export default function App() {
                   className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl py-3 px-4 text-gray-900 dark:text-white font-mono font-black text-center text-xl focus:outline-none focus:border-indigo-500"
                 />
               </div>
-              {/* Message text */}
               <div>
                 <label className="block text-xs font-black text-gray-800 dark:text-gray-300 mb-2">رسالة التحفيز المخصصة:</label>
                 <input
@@ -3039,18 +2697,16 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL 8: ALARM TRIGGERED NOTIFICATION SCREEN */}
       {showAlarmTriggeredModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
           <div
             className="bg-white dark:bg-gray-900 rounded-3xl max-w-md w-full p-8 shadow-2xl border-4 border-indigo-500 dark:border-indigo-600 text-center relative overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Pulsing ring graphic background */}
             <div className="absolute -top-12 -left-12 w-32 h-32 bg-indigo-500/10 rounded-full animate-ping pointer-events-none" />
             <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-indigo-500/10 rounded-full animate-ping pointer-events-none" />
             <div className="text-6xl mb-4 select-none animate-bounce inline-block">🔔</div>
-            <h3 className="text-2xl font-black text-indigo-900 dark:text-indigo-400 mb-2">منبه المذاكرة اليومي! ⏰</h3>
+            <h3 className="text-2xl font-black text-indigo-900 dark:text-indigo-400 mb-2">منبه المذاكرة اليومي! </h3>
             <p className="text-xs text-gray-600 dark:text-gray-400 mb-6 font-bold">الوقت الحالي: {dailyReminderTime}</p>
             <div className="bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800 p-5 rounded-2xl mb-6">
               <p className="text-sm font-black text-gray-900 dark:text-gray-100 leading-relaxed italic">
@@ -3079,7 +2735,6 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL 9: MANUAL PWA INSTALLATION GUIDE */}
       {showInstallInstructionsModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto" onClick={() => setShowInstallInstructionsModal(false)}>
           <div
@@ -3087,8 +2742,8 @@ export default function App() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4 flex-row-reverse">
-              <h3 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-                <span>📲</span> دليل تثبيت التطبيق على جهازك
+              <h3 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
+                <span></span> دليل تثبيت التطبيق على جهازك
               </h3>
               <button onClick={() => setShowInstallInstructionsModal(false)} className="text-2xl text-gray-400 hover:text-gray-600 dark:hover:text-white cursor-pointer select-none">×</button>
             </div>
@@ -3096,7 +2751,6 @@ export default function App() {
               يمكنك تشغيل منصة 4U كتطبيق مستقل ومباشر على هاتفك، جهازك اللوحي أو حاسوبك باتباع الخطوات البسيطة التالية حسب نوع جهازك ومتصفحك:
             </p>
             <div className="space-y-4 overflow-y-auto max-h-[55vh] pr-1 pl-1 text-right">
-              {/* iPhone / iPad */}
               <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-2xl p-4">
                 <h4 className="font-extrabold text-sm text-indigo-600 dark:text-indigo-400 flex items-center gap-2 flex-row-reverse mb-2">
                   <span>🍎</span> أجهزة آبل (iOS / iPhone / iPad):
@@ -3108,10 +2762,9 @@ export default function App() {
                   <li>اضغط على <span className="font-bold">"إضافة" (Add)</span> في الزاوية العلوية لتأكيد التثبيت.</li>
                 </ol>
               </div>
-              {/* Android */}
               <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-2xl p-4">
                 <h4 className="font-extrabold text-sm text-emerald-600 dark:text-emerald-400 flex items-center gap-2 flex-row-reverse mb-2">
-                  <span>🤖</span> أجهزة أندرويد (Google Chrome):
+                  <span></span> أجهزة أندرويد (Google Chrome):
                 </h4>
                 <ol className="list-decimal list-inside space-y-1.5 text-xs text-gray-800 dark:text-gray-300 pr-2">
                   <li>اضغط على النقاط الثلاث <span className="font-bold">(⋮)</span> في الزاوية العلوية للمتصفح.</li>
@@ -3119,7 +2772,6 @@ export default function App() {
                   <li>اضغط على <span className="font-bold">"تثبيت"</span> للتأكيد وسيظهر التطبيق على شاشتك فوراً.</li>
                 </ol>
               </div>
-              {/* Desktop / Laptop */}
               <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-2xl p-4">
                 <h4 className="font-extrabold text-sm text-purple-600 dark:text-purple-400 flex items-center gap-2 flex-row-reverse mb-2">
                   <span>💻</span> أجهزة الكمبيوتر (Chrome / Edge):
