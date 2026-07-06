@@ -1630,5 +1630,561 @@ export const math12Curriculum: Record<string, Curriculum> = {
         ]
       }
     ]
+  },
+  'math-12-general-3': {
+    isEnglish: false,
+    units: [
+      {
+        id: 1,
+        name: 'الوحدة الأولى: الدوال والعلاقات النسبية',
+        icon: '📊',
+        color: 'from-blue-500 to-cyan-600',
+        description: 'دراسة التعابير النسبية وعملياتها الأساسية، تمثيل الدوال النسبية بيانياً، وحل المعادلات والمتباينات النسبية.',
+        lessons: [
+          {
+            id: 1,
+            title: 'الدرس الأول: ضرب التعابير النسبية وقسمتها',
+            icon: '✖️',
+            duration: '50 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-1.1/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-1.1-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'التعابير النسبية هي كسور تحتوي على متغيرات في البسط أو المقام. في هذا الدرس، نتعلم قواعد ضرب وقسمة هذه التعابير وكيفية تبسيطها.',
+              sections: [
+                { title: 'قاعدة الضرب', type: 'formula', content: '(A/B) × (C/D) = (A×C) / (B×D)' },
+                { title: 'قاعدة القسمة', type: 'formula', content: '(A/B) ÷ (C/D) = (A/B) × (D/C) = (A×D) / (B×C)' },
+                { title: 'خطوات التبسيط', type: 'bullets', content: [
+                  'تحليل البسط والمقام إلى عواملهما الأولية.',
+                  'اختصار العوامل المشتركة بين البسط والمقام.',
+                  'التأكد من أن المقام لا يساوي صفراً (شروط المنع).',
+                  'ضرب أو قسمة البسط في البسط والمقام في المقام.'
+                ]}
+              ]
+            }
+          },
+          {
+            id: 2,
+            title: 'الدرس الثاني: جمع وطرح التعابير النسبية',
+            icon: '➕',
+            duration: '55 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-1.2/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-1.2-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'لجمع أو طرح كسور نسبية، يجب أولاً إيجاد المقام المشترك الأصغر (LCD) ثم توحيد المقامات.',
+              sections: [
+                { title: 'المقام المشترك الأصغر (LCD)', type: 'text', content: 'هو أصغر تعبير يمكن قسمته على جميع المقامات بدون باقٍ. يُوجد بأخذ العوامل المشتركة بأعلى أس.' },
+                { title: 'خطوات الجمع والطرح', type: 'bullets', content: [
+                  'تحليل جميع المقامات إلى عوامل.',
+                  'إيجاد المقام المشترك الأصغر (LCD).',
+                  'ضرب كل كسر في العامل الناقص للوصول إلى LCD.',
+                  'جمع أو طرح البسط مع الإبقاء على المقام الموحد.',
+                  'تبسيط الناتج النهائي إن أمكن.'
+                ]},
+                { title: 'مثال تطبيقي', type: 'text', content: '1/(x+2) + 1/(x-2) = [(x-2) + (x+2)] / [(x+2)(x-2)] = 2x / (x²-4)' }
+              ]
+            }
+          },
+          {
+            id: 3,
+            title: 'الدرس الثالث: تمثيل دوال المقلوب بيانياً',
+            icon: '📈',
+            duration: '50 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-1.3/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-1.3-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'دالة المقلوب الأساسية هي f(x) = 1/x. منحنى هذه الدالة يسمى القطع الزائد (Hyperbola) وله خصائص مميزة.',
+              sections: [
+                { title: 'الصيغة العامة', type: 'formula', content: 'f(x) = a/(x - h) + k' },
+                { title: 'الخطوط المقاربة (Asymptotes)', type: 'bullets', content: [
+                  'الخط المقارب الرأسي: x = h (حيث المقام = صفر).',
+                  'الخط المقارب الأفقي: y = k (قيمة الدالة عندما x → ∞).',
+                  'المنحنى يقترب من هذه الخطوط لكن لا يلمسها أبداً.'
+                ]},
+                { title: 'المجال والمدى', type: 'bullets', content: [
+                  'المجال: جميع الأعداد الحقيقية ما عدا x = h.',
+                  'المدى: جميع الأعداد الحقيقية ما عدا y = k.'
+                ]},
+                { title: 'تأثير الثابت a', type: 'text', content: 'إذا كان a > 0، المنحنى يقع في الربعين الأول والثالث. إذا كان a < 0، يقع في الربعين الثاني والرابع.' }
+              ]
+            }
+          },
+          {
+            id: 4,
+            title: 'الدرس الرابع: التمثيل البياني للدوال النسبية',
+            icon: '📉',
+            duration: '55 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-1.4/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-1.4-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'الدوال النسبية العامة هي على الصورة f(x) = P(x)/Q(x) حيث P و Q كثيرات حدود. تحليلها يتطلب دراسة شاملة للسلوك.',
+              sections: [
+                { title: 'خطوات الرسم', type: 'bullets', content: [
+                  'تبسيط الدالة بأقصى حد ممكن (اختصار العوامل المشتركة).',
+                  'إيجاد الخطوط المقاربة الرأسية (أصفار المقام غير الملغاة).',
+                  'إيجاد الخطوط المقاربة الأفقية (مقارنة درجات البسط والمقام).',
+                  'إيجاد نقاط التقاطع مع المحاور (x=0 و y=0).',
+                  'رسم المنحنى باستخدام النقاط المحورية والسلوك المقارب.'
+                ]},
+                { title: 'الخطوط المقاربة الأفقية', type: 'bullets', content: [
+                  'إذا كانت درجة البسط < درجة المقام: y = 0.',
+                  'إذا كانت درجة البسط = درجة المقام: y = معامل البسط / معامل المقام.',
+                  'إذا كانت درجة البسط > درجة المقام: لا يوجد خط مقارب أفقي (قد يوجد مائل).'
+                ]}
+              ]
+            }
+          },
+          {
+            id: 5,
+            title: 'الدرس الخامس: دوال التغير',
+            icon: '🔄',
+            duration: '50 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-1.5/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-1.5-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'دوال التغير تصف العلاقة بين كميتين متغيرتين. هناك ثلاثة أنواع رئيسية: التغير المباشر، التغير العكسي، والتغير المشترك.',
+              sections: [
+                { title: 'التغير المباشر', type: 'formula', content: 'y = kx (حيث k هو ثابت التغير)' },
+                { title: 'التغير العكسي', type: 'formula', content: 'y = k/x أو y·x = k' },
+                { title: 'التغير المشترك', type: 'formula', content: 'y = k·(x^a)/(z^b) (مزيج من التغير المباشر والعكسي)' },
+                { title: 'خطوات الحل', type: 'bullets', content: [
+                  'كتابة المعادلة العامة بناءً على نوع التغير.',
+                  'استخدام المعطيات لإيجاد قيمة ثابت التغير k.',
+                  'تعويض قيمة k في المعادلة العامة.',
+                  'استخدام المعادلة النهائية لحساب المجهول المطلوب.'
+                ]}
+              ]
+            }
+          },
+          {
+            id: 6,
+            title: 'الدرس السادس: حل المعادلات النسبية والمتباينات',
+            icon: '⚖️',
+            duration: '55 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-1.6/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-1.6-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'المعادلات النسبية تحتوي على متغيرات في المقام. حلها يتطلب الحذر من الحلول الدخيلة التي تجعل المقام صفراً.',
+              sections: [
+                { title: 'خطوات حل المعادلات النسبية', type: 'bullets', content: [
+                  'تحديد شروط المنع (قيم x التي تجعل أي مقام = صفر).',
+                  'ضرب طرفي المعادلة في المقام المشترك الأصغر (LCD).',
+                  'حل المعادلة الناتجة (خطية أو تربيعية).',
+                  'فحص الحلول واستبعاد الحلول الدخيلة.'
+                ]},
+                { title: 'حل المتباينات النسبية', type: 'bullets', content: [
+                  'نقل جميع الحدود إلى طرف واحد لتصبح المتباينة = 0.',
+                  'إيجاد النقاط الحرجة (أصفار البسط والمقام).',
+                  'رسم خط الأعداد وتحديد الإشارة في كل فترة.',
+                  'اختيار الفترات التي تحقق إشارة المتباينة مع مراعاة الأقواس.'
+                ]}
+              ]
+            }
+          }
+        ]
+      },
+      {
+        id: 2,
+        name: 'الوحدة الثانية: الدوال المثلثية',
+        icon: '📐',
+        color: 'from-purple-500 to-pink-600',
+        description: 'دراسة النسب المثلثية في المثلثات القائمة والزوايا العامة، قوانين الجيب وجيب التمام، والدوال الدائرية والدورية.',
+        lessons: [
+          {
+            id: 1,
+            title: 'الدرس الأول: النسب المثلثية في المثلثات القائمة',
+            icon: '📐',
+            duration: '50 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.1/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.1-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'النسب المثلثية الستة تربط بين زوايا المثلث القائم وأضلاعه. هذه النسب هي الأساس لحل مسائل المثلثات.',
+              sections: [
+                { title: 'النسب الأساسية', type: 'bullets', content: [
+                  'Sin(θ) = المقابل / الوتر',
+                  'Cos(θ) = المجاور / الوتر',
+                  'Tan(θ) = المقابل / المجاور'
+                ]},
+                { title: 'النسب المقلوبة', type: 'bullets', content: [
+                  'Csc(θ) = 1/Sin(θ) = الوتر / المقابل',
+                  'Sec(θ) = 1/Cos(θ) = الوتر / المجاور',
+                  'Cot(θ) = 1/Tan(θ) = المجاور / المقابل'
+                ]},
+                { title: 'نظرية فيثاغورس', type: 'formula', content: 'a² + b² = c² (حيث c هو الوتر)' }
+              ]
+            }
+          },
+          {
+            id: 2,
+            title: 'الدرس الثاني: الزوايا وقياس الزاوية',
+            icon: '📏',
+            duration: '55 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.2/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.2-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'يمكن قياس الزوايا بوحدتين مختلفتين: الدرجات (Degrees) والراديان (Radians). الراديان هو الوحدة الطبيعية في الرياضيات المتقدمة.',
+              sections: [
+                { title: 'التحويل بين الدرجات والراديان', type: 'formula', content: 'الراديان = الدرجات × (π/180) | الدرجات = الراديان × (180/π)' },
+                { title: 'الزوايا الشائعة', type: 'table', headers: ['الدرجات', 'الراديان'], rows: [
+                  ['0°', '0'],
+                  ['30°', 'π/6'],
+                  ['45°', 'π/4'],
+                  ['60°', 'π/3'],
+                  ['90°', 'π/2'],
+                  ['180°', 'π'],
+                  ['270°', '3π/2'],
+                  ['360°', '2π']
+                ]},
+                { title: 'طول القوس', type: 'formula', content: 's = rθ (حيث θ بالراديان و r نصف القطر)' },
+                { title: 'مساحة القطاع', type: 'formula', content: 'A = (1/2)r²θ (حيث θ بالراديان)' }
+              ]
+            }
+          },
+          {
+            id: 3,
+            title: 'الدرس الثالث: النسب المثلثية للزوايا العامة',
+            icon: '🔄',
+            duration: '50 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.3/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.3-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'الزوايا العامة يمكن أن تكون في أي ربع من أرباع دائرة الوحدة. نستخدم الزاوية المرجعية (Reference Angle) لإيجاد قيم النسب المثلثية.',
+              sections: [
+                { title: 'أرباع الدائرة والإشارات', type: 'table', headers: ['الربع', 'Sin', 'Cos', 'Tan'], rows: [
+                  ['الأول (I)', '+', '+', '+'],
+                  ['الثاني (II)', '+', '-', '-'],
+                  ['الثالث (III)', '-', '-', '+'],
+                  ['الرابع (IV)', '-', '+', '-']
+                ]},
+                { title: 'الزاوية المرجعية', type: 'text', content: 'هي الزاوية الحادة بين الضلع النهائي ومحور x. قيم النسب المثلثية للزاوية الأصلية تساوي قيم الزاوية المرجعية مع تحديد الإشارة حسب الربع.' },
+                { title: 'نقاط دائرة الوحدة', type: 'formula', content: '(cos θ, sin θ) هي إحداثيات النقطة على دائرة الوحدة للزاوية θ' }
+              ]
+            }
+          },
+          {
+            id: 4,
+            title: 'الدرس الرابع: قانون Sine',
+            icon: '📊',
+            duration: '55 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.4/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.4-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'قانون الجيب يربط بين أضلاع المثلث وجيوب زواياها المقابلة. يُستخدم لحل المثلثات غير القائمة.',
+              sections: [
+                { title: 'صيغة قانون الجيب', type: 'formula', content: 'a/sin(A) = b/sin(B) = c/sin(C)' },
+                { title: 'حالات الاستخدام', type: 'bullets', content: [
+                  'عند معرفة زاويتين وضلع (AAS أو ASA).',
+                  'عند معرفة ضلعين وزاوية مقابلة لأحدهما (SSA) - حالة الغموض.'
+]},
+                { title: 'مساحة المثلث', type: 'formula', content: 'Area = (1/2)ab·sin(C) = (1/2)bc·sin(A) = (1/2)ac·sin(B)' },
+                { title: 'حالة الغموض (SSA)', type: 'bullets', content: [
+                  'إذا كان sin(θ) > 1: لا يوجد حل.',
+                  'إذا كان sin(θ) = 1: حل واحد (زاوية قائمة).',
+                  'إذا كان 0 < sin(θ) < 1: حلان محتملان (θ و 180°-θ).'
+                ]}
+              ]
+            }
+          },
+          {
+            id: 5,
+            title: 'الدرس الخامس: قانون Cosine',
+            icon: '📊',
+            duration: '55 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.5/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.5-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'قانون جيب التمام هو تعميم لنظرية فيثاغورس للمثلثات غير القائمة. يربط بين الأضلاع والزوايا.',
+              sections: [
+                { title: 'صيغة قانون جيب التمام', type: 'formula', content: 'c² = a² + b² - 2ab·cos(C)' },
+                { title: 'الصيغ الأخرى', type: 'bullets', content: [
+                  'a² = b² + c² - 2bc·cos(A)',
+                  'b² = a² + c² - 2ac·cos(B)'
+                ]},
+                { title: 'حالات الاستخدام', type: 'bullets', content: [
+                  'عند معرفة ثلاثة أضلاع (SSS) لإيجاد الزوايا.',
+                  'عند معرفة ضلعين والزاوية المحصورة بينهما (SAS).'
+                ]},
+                { title: 'إيجاد الزاوية', type: 'formula', content: 'cos(C) = (a² + b² - c²) / (2ab)' }
+              ]
+            }
+          },
+          {
+            id: 6,
+            title: 'الدرس السادس: الدوال الدائرية والدورية',
+            icon: '⭕',
+            duration: '50 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.6/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.6-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'الدوال المثلثية هي دوال دورية تتكرر قيمها على فترات منتظمة. الدورية هي الخاصية الأساسية التي تميز هذه الدوال.',
+              sections: [
+                { title: 'الدورية (Period)', type: 'bullets', content: [
+                  'Sin(x) و Cos(x) و Csc(x) و Sec(x): الدور = 2π',
+                  'Tan(x) و Cot(x): الدور = π'
+                ]},
+                { title: 'الخصائص العامة', type: 'bullets', content: [
+                  'المجال: جميع الأعداد الحقيقية (ما عدا أصفار المقام).',
+                  'المدى: [-1, 1] لـ Sin و Cos، وباقي الأعداد الحقيقية للباقية.',
+                  'التماثل: Cos دالة زوجية، Sin دالة فردية.'
+                ]},
+                { title: 'العلاقة الأساسية', type: 'formula', content: 'sin²(x) + cos²(x) = 1' }
+              ]
+            }
+          },
+          {
+            id: 7,
+            title: 'الدرس السابع: تمثيل الدوال المثلثية بيانياً',
+            icon: '📈',
+            duration: '55 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.7/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.7-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'الصيغة العامة للدوال المثلثية المحولة هي y = A·sin(B(x - C)) + D أو y = A·cos(B(x - C)) + D.',
+              sections: [
+                { title: 'السعة (Amplitude)', type: 'formula', content: '|A| (القيمة المطلقة للمعامل A)' },
+                { title: 'الدور (Period)', type: 'formula', content: '2π/|B| لـ Sin و Cos' },
+                { title: 'إزاحة الطور (Phase Shift)', type: 'formula', content: 'C (إزاحة يميناً إذا C > 0، يساراً إذا C < 0)' },
+                { title: 'الإزاحة الرأسية', type: 'formula', content: 'D (الخط الأوسط: y = D)' },
+                { title: 'خطوات الرسم', type: 'bullets', content: [
+                  'تحديد السعة، الدور، إزاحة الطور، والإزاحة الرأسية.',
+                  'رسم الخط الأوسط y = D.',
+                  'تحديد نقاط البداية والنهاية للدورة الواحدة.',
+                  'تقسيم الدورة إلى أربع نقاط رئيسية ورسم المنحنى.'
+                ]}
+              ]
+            }
+          },
+          {
+            id: 8,
+            title: 'الدرس الثامن: إزاحة التمثيلات البيانية للدوال المثلثية',
+            icon: '↔️',
+            duration: '55 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.8/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.8-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'فهم تأثير كل معامل في الصيغة العامة على شكل وموقع المنحنى المثلثي.',
+              sections: [
+                { title: 'تأثير A (السعة)', type: 'bullets', content: [
+                  '|A| > 1: تمدد رأسي.',
+                  '0 < |A| < 1: انضغاط رأسي.',
+                  'A < 0: انعكاس حول المحور x.'
+                ]},
+                { title: 'تأثير B (الدور)', type: 'bullets', content: [
+                  '|B| > 1: انضغاط أفقي (دور أقصر).',
+                  '0 < |B| < 1: تمدد أفقي (دور أطول).',
+                  'B < 0: انعكاس حول المحور y.'
+                ]},
+                { title: 'تأثير C (إزاحة الطور)', type: 'text', content: 'إزاحة أفقية بمقدار C وحدة. إذا كانت الصيغة (x - C) فالإزاحة يميناً، وإذا كانت (x + C) فالإزاحة يساراً.' },
+                { title: 'تأثير D (الإزاحة الرأسية)', type: 'text', content: 'رفع أو خفض المنحنى بمقدار D. الخط الأوسط يصبح y = D بدلاً من y = 0.' }
+              ]
+            }
+          },
+          {
+            id: 9,
+            title: 'الدرس التاسع: الدوال المثلثية العكسية',
+            icon: '🔁',
+            duration: '50 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.9/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-2.9-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'الدوال المثلثية العكسية تعكس العلاقة: بدلاً من إيجاد النسبة من الزاوية، نجد الزاوية من النسبة. يجب تقييد المجال لضمان أن تكون الدالة واحدة لواحد.',
+              sections: [
+                { title: 'الدوال العكسية الأساسية', type: 'bullets', content: [
+                  'Arcsin(x): المجال [-1, 1]، المدى [-π/2, π/2]',
+                  'Arccos(x): المجال [-1, 1]، المدى [0, π]',
+                  'Arctan(x): المجال جميع الأعداد الحقيقية، المدى (-π/2, π/2)'
+                ]},
+                { title: 'الرموز المستخدمة', type: 'bullets', content: [
+                  'sin⁻¹(x) = arcsin(x)',
+                  'cos⁻¹(x) = arccos(x)',
+                  'tan⁻¹(x) = arctan(x)'
+                ]},
+                { title: 'حل المعادلات المثلثية', type: 'text', content: 'استخدام الدوال العكسية لإيجاد الزاوية المرجعية، ثم استخدام الدورية لإيجاد جميع الحلول في الفترة المطلوبة.' }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        id: 3,
+        name: 'الوحدة الثالثة: المتطابقات والمعادلات المثلثية',
+        icon: '🔢',
+        color: 'from-emerald-500 to-teal-600',
+        description: 'دراسة المتطابقات المثلثية الأساسية وإثباتها، متطابقات مجموع الزاويتين، ومتطابقات ضعف الزاوية ونصفها، وحل المعادلات المثلثية.',
+        lessons: [
+          {
+            id: 1,
+            title: 'الدرس الأول: المتطابقات المثلثية',
+            icon: '🔢',
+            duration: '55 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-3.1/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-3.1-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'المتطابقة المثلثية هي معادلة صحيحة لجميع قيم المتغير. المتطابقات الأساسية تنشأ من التعريفات ونظرية فيثاغورس.',
+              sections: [
+                { title: 'المتطابقات النسبية', type: 'bullets', content: [
+                  'tan(θ) = sin(θ)/cos(θ)',
+                  'cot(θ) = cos(θ)/sin(θ)',
+                  'csc(θ) = 1/sin(θ)',
+                  'sec(θ) = 1/cos(θ)'
+                ]},
+                { title: 'المتطابقات المقلوبة', type: 'bullets', content: [
+                  'sin(θ)·csc(θ) = 1',
+                  'cos(θ)·sec(θ) = 1',
+                  'tan(θ)·cot(θ) = 1'
+                ]},
+                { title: 'المتطابقات البيثاغورية', type: 'bullets', content: [
+                  'sin²(θ) + cos²(θ) = 1',
+                  '1 + tan²(θ) = sec²(θ)',
+                  '1 + cot²(θ) = csc²(θ)'
+                ]}
+              ]
+            }
+          },
+          {
+            id: 2,
+            title: 'الدرس الثاني: إثبات صحة المتطابقات المثلثية',
+            icon: '✅',
+            duration: '55 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-3.2/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-3.2-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+                intro: 'إثبات المتطابقات يتطلب تحويل أحد الطرفين أو كلاهما باستخدام المتطابقات المعروفة حتى يتساوى الطرفان.',
+                sections: [
+                  { title: 'استراتيجيات الإثبات', type: 'bullets', content: [
+                    'ابدأ بالطرف الأكثر تعقيداً.',
+                    'حوّل جميع الدوال إلى sin و cos إذا لزم الأمر.',
+                    'استخدم المتطابقات البيثاغورية لتبسيط المقادير.',
+                    'حلّل الكسور ووحّد المقامات.',
+                    'لا تنقل حدوداً بين الطرفين (اعمل على طرف واحد فقط).'
+                  ]},
+                  { title: 'أمثلة شائعة', type: 'bullets', content: [
+                    '(1 - cos²x)/cos(x) = sin(x)·tan(x)',
+                    '1/(1+sin x) + 1/(1-sin x) = 2·sec²(x)',
+                    '(sec x - tan x)/(csc x - cot x) = (sin x + 1)/cos(x)'
+                  ]}
+                ]
+            }
+          },
+          {
+            id: 3,
+            title: 'الدرس الثالث: متطابقات مجموع زاويتين والفرق بينهما',
+            icon: '➕',
+            duration: '50 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-3.3/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-3.3-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'هذه المتطابقات تربط بين الدوال المثلثية لمجموع أو فرق زاويتين والدوال المثلثية لكل زاوية على حدة.',
+              sections: [
+                { title: 'متطابقات الجمع', type: 'bullets', content: [
+                  'sin(A + B) = sin(A)cos(B) + cos(A)sin(B)',
+                  'cos(A + B) = cos(A)cos(B) - sin(A)sin(B)',
+                  'tan(A + B) = [tan(A) + tan(B)] / [1 - tan(A)tan(B)]'
+                ]},
+                { title: 'متطابقات الطرح', type: 'bullets', content: [
+                  'sin(A - B) = sin(A)cos(B) - cos(A)sin(B)',
+                  'cos(A - B) = cos(A)cos(B) + sin(A)sin(B)',
+                  'tan(A - B) = [tan(A) - tan(B)] / [1 + tan(A)tan(B)]'
+                ]},
+                { title: 'تطبيقات', type: 'text', content: 'تُستخدم هذه المتطابقات لإيجاد القيم الدقيقة لزوايا غير شائعة (مثل 15° = 45° - 30°) وتبسيط التعابير المعقدة.' }
+              ]
+            }
+          },
+          {
+            id: 4,
+            title: 'الدرس الرابع: متطابقات ضعف الزاوية ونصفها',
+            icon: '✖️',
+            duration: '55 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-3.4/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-3.4-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'متطابقات ضعف الزاوية هي حالات خاصة من متطابقات الجمع عندما A = B. متطابقات نصف الزاوية تُشتق منها.',
+              sections: [
+                { title: 'متطابقات ضعف الزاوية', type: 'bullets', content: [
+                  'sin(2A) = 2·sin(A)·cos(A)',
+                  'cos(2A) = cos²(A) - sin²(A) = 2cos²(A) - 1 = 1 - 2sin²(A)',
+                  'tan(2A) = 2tan(A) / [1 - tan²(A)]'
+                ]},
+                { title: 'متطابقات نصف الزاوية', type: 'bullets', content: [
+                  'sin(A/2) = ±√[(1 - cos A)/2]',
+                  'cos(A/2) = ±√[(1 + cos A)/2]',
+                  'tan(A/2) = ±√[(1 - cos A)/(1 + cos A)] = sin A / (1 + cos A)'
+                ]},
+                { title: 'تحديد الإشارة', type: 'text', content: 'الإشارة (±) تُحدد بناءً على الربع الذي تقع فيه الزاوية A/2.' }
+              ]
+            }
+          },
+          {
+            id: 5,
+            title: 'الدرس الخامس: المعادلات المثلثية',
+            icon: '⚖️',
+            duration: '55 دقيقة',
+            lessonUrl: 'https://hesham-afandi.github.io/12jen-math-T3-3.5/',
+            lessonTitle: '📖 شرح الدرس',
+            examUrl: 'https://hesham-afandi.github.io/12jen-math-T3-3.5-exam/',
+            examTitle: '📝 ابدأ الاختبار',
+            content: {
+              intro: 'المعادلات المثلثية تحتوي على دوال مثلثية لمجهول زاوي. حلها يتطلب استخدام المتطابقات والعكس للدوال المثلثية.',
+              sections: [
+                { title: 'استراتيجيات الحل', type: 'bullets', content: [
+                  'عزل الدالة المثلثية في طرف واحد.',
+                  'استخدام الدالة العكسية لإيجاد الزاوية المرجعية.',
+                  'استخدام الدورية لإيجاد جميع الحلول في الفترة المحددة.',
+                  'استخدام المتطابقات لتبسيط المعادلات المعقدة.'
+                ]},
+                { title: 'أنواع المعادلات', type: 'bullets', content: [
+                  'معادلات خطية: sin(x) = 1/2',
+                  'معادلات تربيعية: 2sin²(x) - sin(x) - 1 = 0 (تُحل بالتحليل)',
+                  'معادلات باستخدام متطابقات: تحويل المعادلة إلى شكل أبسط.'
+                ]},
+                { title: 'الدورية والحلول العامة', type: 'bullets', content: [
+                  'لـ sin(x) = k: x = θ + 2nπ أو x = π - θ + 2nπ',
+                  'لـ cos(x) = k: x = ±θ + 2nπ',
+                  'لـ tan(x) = k: x = θ + nπ',
+                  'حيث n عدد صحيح و θ هي الزاوية المرجعية.'
+                ]}
+              ]
+            }
+          }
+        ]
+      }
+    ]
   }
 };
