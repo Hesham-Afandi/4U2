@@ -1,0 +1,16 @@
+{
+  "name": "المنصة التعليمية المتكاملة 4U",
+  "short_name": "4U التعليمية",
+  "description": "منصة 4U التعليمية المتكاملة للمناهج والخطط الدراسية",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#6366f1",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

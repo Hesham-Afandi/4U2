@@ -1,0 +1,2 @@
+// Firebase Service placeholder
+export {};

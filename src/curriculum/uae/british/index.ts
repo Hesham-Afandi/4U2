@@ -1,0 +1,2 @@
+// British curriculum placeholder
+export {};

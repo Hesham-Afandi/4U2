@@ -1,0 +1,2 @@
+// Storage Service placeholder
+export {};

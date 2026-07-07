@@ -1,0 +1,2 @@
+// Egypt curriculum placeholder
+export {};

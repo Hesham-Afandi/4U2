@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "مكتبة المناهج التفاعلية",
+  "description": "منصة تعليمية تفاعلية شاملة لمناهج دولة الإمارات، السعودية، مصر، عمان، قطر، والبحرين لكافة المواد الدراسية مع خطط أسبوعية واختبارات وتتبع ذكي.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

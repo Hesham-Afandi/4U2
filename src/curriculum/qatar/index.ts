@@ -1,0 +1,2 @@
+// Qatar curriculum placeholder
+export {};

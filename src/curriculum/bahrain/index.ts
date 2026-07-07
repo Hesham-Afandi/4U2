@@ -1,0 +1,2 @@
+// Bahrain curriculum placeholder
+export {};

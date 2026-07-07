@@ -1,0 +1,2 @@
+// Oman curriculum placeholder
+export {};

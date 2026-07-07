@@ -1,4 +1,4 @@
-import { Curriculum } from '../types';
+import { Curriculum } from '../../../../../types';
 
 export const physics12Curriculum: Record<string, Curriculum> = {
   'physics-12-bridge-1': {

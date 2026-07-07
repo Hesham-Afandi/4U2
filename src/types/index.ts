@@ -80,6 +80,7 @@ export interface Database {
 }
 
 export interface AppState {
+  country: string | null;
   term: Term | null;
   stream: Stream | null;
   program: Program | null;

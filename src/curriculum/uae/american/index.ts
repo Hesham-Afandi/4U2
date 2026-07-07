@@ -1,0 +1,2 @@
+// American curriculum placeholder
+export {};

@@ -1,0 +1,2 @@
+// Saudi curriculum placeholder
+export {};

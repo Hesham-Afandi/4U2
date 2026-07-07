@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <!-- Rich High-Contrast Gradients for Maximum Visibility -->
+    <linearGradient id="logo-grad-primary" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" /> <!-- Deep Indigo -->
+      <stop offset="50%" stop-color="#6366f1" /> <!-- Bright Indigo -->
+      <stop offset="100%" stop-color="#7c3aed" /> <!-- Vibrant Violet -->
+    </linearGradient>
+    <linearGradient id="logo-grad-accent" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d97706" /> <!-- Dark Amber -->
+      <stop offset="50%" stop-color="#f59e0b" /> <!-- Amber -->
+      <stop offset="100%" stop-color="#fbbf24" /> <!-- Warm Yellow -->
+    </linearGradient>
+    <filter id="logo-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#0f172a" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Clear, Beautiful, Highly Readable 4U Logo with Academic Cap -->
+  <g filter="url(#logo-shadow)">
+    <!-- 1. The Bold Geometric "4" (Primary Theme) -->
+    <!-- Vertical stem -->
+    <path d="M 39,20 L 39,75" fill="none" stroke="url(#logo-grad-primary)" stroke-width="11" stroke-linecap="round" />
+    <!-- Diagonal and Horizontal bar -->
+    <path d="M 39,20 L 14,53 L 49,53" fill="none" stroke="url(#logo-grad-primary)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- 2. The Bold Geometric "U" (Accent Theme - High Contrast) -->
+    <!-- Positioned perfectly next to 4 to form "4U" clearly -->
+    <path d="M 57,32 L 57,58 C 57,67 63,73 71,73 C 79,73 85,67 85,58 L 85,32" fill="none" stroke="url(#logo-grad-accent)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- 3. Elegant Academic/Graduation Cap on top of the transition -->
+    <!-- Diamond/Board -->
+    <path d="M 48,6 L 66,13 L 48,20 L 30,13 Z" fill="url(#logo-grad-accent)" stroke="#ffffff" stroke-width="1" />
+    <!-- Cap Neck/Skull -->
+    <path d="M 40,16 L 40,19 C 40,21.5 43,22.5 48,22.5 C 53,22.5 56,21.5 56,19 L 56,16" fill="url(#logo-grad-accent)" opacity="0.9" />
+    <!-- Tassel hanging to the right -->
+    <path d="M 48,13 L 66,13 L 66,22" fill="none" stroke="url(#logo-grad-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="66" cy="23" r="2" fill="#d97706" />
+  </g>
+</svg>
